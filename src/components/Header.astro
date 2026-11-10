@@ -1,0 +1,70 @@
+---
+import { siteConfig } from '../config/site';
+import { Phone, Menu, X } from 'lucide-astro';
+---
+
+<header class="fixed w-full z-50 transition-all duration-300 glass" id="site-header">
+  <div class="container mx-auto px-6 h-20 flex items-center justify-between">
+    <a href="/" class="text-2xl font-display font-bold text-brand-navy">
+      {siteConfig.businessName}
+    </a>
+
+    <nav class="hidden md:flex items-center space-x-8">
+      <a href="/services" class="text-sm font-medium text-brand-navy hover:text-brand-accent transition-colors">Services</a>
+      <a href="/about" class="text-sm font-medium text-brand-navy hover:text-brand-accent transition-colors">About</a>
+      <a href="/blog" class="text-sm font-medium text-brand-navy hover:text-brand-accent transition-colors">Blog</a>
+      <a href="/contact" class="text-sm font-medium text-brand-navy hover:text-brand-accent transition-colors">Contact</a>
+    </nav>
+
+    <div class="hidden md:flex items-center space-x-4">
+      <a href={`tel:${siteConfig.contact.phone.replace(/[^0-9+]/g, '')}`} class="flex items-center space-x-2 text-brand-navy hover:text-brand-accent transition-colors">
+        <Phone class="w-4 h-4" />
+        <span class="font-medium">{siteConfig.contact.phone}</span>
+      </a>
+      <a href="#booking" class="bg-brand-navy text-white px-6 py-2.5 rounded-full text-sm font-medium hover:bg-brand-navy/90 transition-colors shadow-lg shadow-brand-navy/20">
+        Book Now
+      </a>
+    </div>
+
+    <button id="mobile-menu-btn" class="md:hidden p-2 text-brand-navy" aria-label="Toggle menu">
+      <Menu class="w-6 h-6" id="menu-icon" />
+      <X class="w-6 h-6 hidden" id="close-icon" />
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 w-full bg-white border-t border-slate-100 shadow-xl pb-6">
+    <nav class="flex flex-col p-6 space-y-4">
+      <a href="/services" class="text-lg font-medium text-brand-navy">Services</a>
+      <a href="/about" class="text-lg font-medium text-brand-navy">About</a>
+      <a href="/blog" class="text-lg font-medium text-brand-navy">Blog</a>
+      <a href="/contact" class="text-lg font-medium text-brand-navy">Contact</a>
+      <hr class="border-slate-100 my-2" />
+      <a href="#booking" class="bg-brand-navy text-white px-6 py-3 rounded-full text-center font-medium">Book Inspection</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.getElementById('site-header');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 20) {
+      header?.classList.add('h-16', 'shadow-sm');
+      header?.classList.remove('h-20');
+    } else {
+      header?.classList.remove('h-16', 'shadow-sm');
+      header?.classList.add('h-20');
+    }
+  });
+
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  const menuIcon = document.getElementById('menu-icon');
+  const closeIcon = document.getElementById('close-icon');
+
+  btn?.addEventListener('click', () => {
+    menu?.classList.toggle('hidden');
+    menuIcon?.classList.toggle('hidden');
+    closeIcon?.classList.toggle('hidden');
+  });
+</script>

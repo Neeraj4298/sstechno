@@ -1,0 +1,264 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { siteConfig } from '../config/site';
+import ServiceCard from '../components/ServiceCard.astro';
+import TestimonialCard from '../components/TestimonialCard.astro';
+import BeforeAfterSlider from "../components/BeforeAfterSlider.astro";
+import FAQAccordion from '../components/FAQAccordion.astro';
+import BookingForm from '../components/BookingForm.astro';
+import { CheckCircle2, Shield, Clock, Award, MapPin } from 'lucide-astro';
+
+// Placeholder testimonials
+const testimonials = [
+  { name: "Anjali S.", location: "South Delhi", service: "AC Repair", text: "Incredibly professional. They fixed a leak that two other technicians couldn't find. Cleaned up perfectly afterwards." },
+  { name: "Vikram R.", location: "Gurugram", service: "Installation", text: "The installation was flawless. They ensured proper insulation and piping routing which looks very neat. Highly recommend." },
+  { name: "Priya M.", location: "Noida", service: "General Service", text: "My 4-year-old AC cools like brand new. They didn't rush the process and showed me the before/after of the coils." }
+];
+
+const faqs = [
+  { question: "How often should I service my AC?", answer: "We recommend a deep clean and service at least once a year, ideally before summer starts. For heavily used units or dusty areas, twice a year is best." },
+  { question: "Do you provide a warranty on repairs?", answer: "Yes, we provide a 90-day warranty on our workmanship and any genuine parts we replace." },
+  { question: "Are your technicians background-checked?", answer: "Absolutely. All our technicians are in-house employees who have passed strict background checks and rigorous technical training." },
+  { question: "What is included in a general service?", answer: "It includes filter cleaning, indoor/outdoor coil washing, drain tray cleaning, blower check, gas pressure check, and electrical connection inspection." },
+  { question: "How quickly can you send someone?", answer: "We aim for same-day service for bookings made before 2 PM. For emergencies, we try to reach you within 3 hours." },
+  { question: "Are there any hidden visit charges?", answer: "No. Our inspection is completely free if you proceed with the repair. If you choose not to repair after the quote, a nominal visit fee of ₹299 applies." }
+];
+---
+
+<Layout title={`${siteConfig.businessName} - Premium AC Repair & Service in ${siteConfig.location.city}`} description={`Professional AC repair, installation, and servicing in ${siteConfig.location.city}. Genuine parts, 90-day warranty, and expert technicians. Book now.`}>
+  
+  <!-- Hero Section -->
+  <section class="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden bg-brand-navy flex items-center min-h-[90vh]">
+    <div class="absolute inset-0 z-0">
+      <!-- PLACEHOLDER: Replace with a high-quality cinematic image of a bright airy room with an AC -->
+      <div class="absolute inset-0 bg-gradient-to-r from-brand-navy via-brand-navy/90 to-transparent z-10"></div>
+      <img src="https://images.unsplash.com/photo-1615873968403-89e068629265?q=80&w=2940&auto=format&fit=crop" alt="Modern living room with air conditioner" class="w-full h-full object-cover object-center opacity-60" />
+    </div>
+    
+    <div class="container mx-auto px-6 relative z-10">
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-2 mb-8 animate-on-scroll">
+          <span class="flex h-2 w-2 rounded-full bg-brand-accent"></span>
+          <span class="text-brand-frost text-sm font-medium tracking-wide">Serving {siteConfig.location.city} & NCR</span>
+        </div>
+        
+        <h1 class="text-fluid-h1 text-white mb-6 animate-on-scroll" style="transition-delay: 100ms;">
+          Perfectly Cool.<br/>Professionally Cared For.
+        </h1>
+        
+        <p class="text-xl md:text-2xl text-brand-frost/90 mb-10 max-w-2xl leading-relaxed animate-on-scroll" style="transition-delay: 200ms;">
+          Expert diagnostics, genuine parts, and white-glove service for your home's climate comfort.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 mb-12 animate-on-scroll" style="transition-delay: 300ms;">
+          <a href="#booking" class="bg-brand-navy text-white px-8 py-4 rounded-full font-medium text-lg text-center hover:bg-brand-accent/90 transition-colors shadow-lg shadow-brand-accent/20">
+            Book Free Inspection
+          </a>
+          <a href={`tel:${siteConfig.contact.phone.replace(/[^0-9+]/g, '')}`} class="bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-full font-medium text-lg text-center hover:bg-white/20 transition-colors">
+            Call {siteConfig.contact.phone}
+          </a>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-6 animate-on-scroll" style="transition-delay: 400ms;">
+          <div class="flex items-center space-x-3 text-brand-frost">
+            <Shield class="w-5 h-5 text-brand-accent" />
+            <span class="text-sm font-medium">90-Day Warranty</span>
+          </div>
+          <div class="flex items-center space-x-3 text-brand-frost">
+            <Clock class="w-5 h-5 text-brand-accent" />
+            <span class="text-sm font-medium">Same-Day Service</span>
+          </div>
+          <div class="flex items-center space-x-3 text-brand-frost col-span-2 md:col-span-1">
+            <Award class="w-5 h-5 text-brand-accent" />
+            <span class="text-sm font-medium">{siteConfig.stats.rating} Rating ({siteConfig.stats.homesServed} homes)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Marquee -->
+  <section class="py-8 bg-brand-frost/30 border-b border-brand-frost overflow-hidden">
+    <div class="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+      <p class="text-sm font-medium text-slate-500 uppercase tracking-widest whitespace-nowrap">Brands We Service</p>
+      <div class="flex space-x-8 md:space-x-12 overflow-x-auto w-full pb-2 md:pb-0 hide-scrollbar opacity-60 grayscale">
+        {siteConfig.brands.map(brand => (
+          <span class="text-xl font-display font-bold text-brand-navy whitespace-nowrap">{brand}</span>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Bento -->
+  <section class="py-24 bg-brand-white">
+    <div class="container mx-auto px-6">
+      <div class="text-center max-w-2xl mx-auto mb-16 animate-on-scroll">
+        <h2 class="text-fluid-h2 mb-6">Expertise you can feel</h2>
+        <p class="text-lg text-slate-600">From a simple gas top-up to complex PCB repairs, our certified technicians handle it all with precision and care.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {siteConfig.services.map((service, index) => (
+          <div class="animate-on-scroll" style={`transition-delay: ${index * 100}ms`}>
+            <ServiceCard {...service} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="py-24 bg-white relative overflow-hidden">
+    <div class="container mx-auto px-6 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div class="animate-on-scroll">
+          <h2 class="text-fluid-h2 mb-6">Not your typical repair service.</h2>
+          <p class="text-lg text-slate-600 mb-10">We believe in transparent pricing, arriving on time, and leaving your home as clean as we found it.</p>
+          
+          <div class="space-y-8">
+            <div class="flex items-start space-x-4">
+              <div class="w-12 h-12 bg-brand-frost rounded-full flex items-center justify-center shrink-0">
+                <CheckCircle2 class="w-6 h-6 text-brand-navy" />
+              </div>
+              <div>
+                <h4 class="text-xl font-bold text-brand-navy mb-2">Upfront Written Quotes</h4>
+                <p class="text-slate-600">No surprises or hidden fees. We inspect, explain the issue, and provide a clear quote before any work begins.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-4">
+              <div class="w-12 h-12 bg-brand-frost rounded-full flex items-center justify-center shrink-0">
+                <Award class="w-6 h-6 text-brand-navy" />
+              </div>
+              <div>
+                <h4 class="text-xl font-bold text-brand-navy mb-2">Genuine OEM Parts</h4>
+                <p class="text-slate-600">We don't cut corners. Replacements are sourced directly from manufacturers to ensure longevity.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-4">
+              <div class="w-12 h-12 bg-brand-frost rounded-full flex items-center justify-center shrink-0">
+                <Shield class="w-6 h-6 text-brand-navy" />
+              </div>
+              <div>
+                <h4 class="text-xl font-bold text-brand-navy mb-2">90-Day Peace of Mind</h4>
+                <p class="text-slate-600">Our workmanship and replaced parts are backed by a solid 90-day warranty. If the same issue returns, so do we—for free.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="relative animate-on-scroll h-[600px] rounded-3xl overflow-hidden shadow-2xl">
+          <!-- PLACEHOLDER: Technician working -->
+          <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=1200&auto=format&fit=crop" alt="Technician repairing AC" class="w-full h-full object-cover" />
+          <div class="absolute inset-0 bg-brand-navy/10"></div>
+          
+          <!-- Floating badge -->
+          <div class="absolute bottom-8 left-8 bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-xl max-w-xs">
+            <div class="flex items-center space-x-4 mb-2">
+              <div class="flex -space-x-2">
+                <div class="w-10 h-10 rounded-full bg-brand-frost border-2 border-white"></div>
+                <div class="w-10 h-10 rounded-full bg-brand-accent border-2 border-white"></div>
+                <div class="w-10 h-10 rounded-full bg-brand-navy border-2 border-white flex items-center justify-center text-white text-xs font-bold">+</div>
+              </div>
+              <div class="font-bold text-brand-navy">{siteConfig.stats.homesServed}</div>
+            </div>
+            <p class="text-sm font-medium text-slate-600">Homes cooled perfectly this year.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="py-24 bg-brand-navy text-white">
+    <div class="container mx-auto px-6">
+      <div class="text-center max-w-2xl mx-auto mb-16 animate-on-scroll">
+        <h2 class="text-fluid-h2 text-white mb-6">How it works</h2>
+        <p class="text-brand-frost/80 text-lg">A seamless experience from booking to cool air.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+        <div class="hidden md:block absolute top-12 left-1/8 right-1/8 h-0.5 bg-brand-frost/20 z-0"></div>
+        
+        {[
+          { step: "01", title: "Book", desc: "Call or submit the form. We'll confirm your slot immediately." },
+          { step: "02", title: "Inspect", desc: "Our tech arrives, diagnoses the issue, and gives a written quote." },
+          { step: "03", title: "Approve", desc: "You review the price. We only proceed if you're 100% happy." },
+          { step: "04", title: "Relax", desc: "We fix it, clean up, and activate your 90-day warranty." }
+        ].map((item, i) => (
+          <div class="relative z-10 text-center animate-on-scroll" style={`transition-delay: ${i * 150}ms`}>
+            <div class="w-24 h-24 mx-auto bg-brand-navy border-4 border-brand-frost/20 rounded-full flex items-center justify-center text-3xl font-display font-bold text-brand-accent mb-6 shadow-[0_0_30px_rgba(25,181,201,0.2)]">
+              {item.step}
+            </div>
+            <h4 class="text-xl font-bold mb-3">{item.title}</h4>
+            <p class="text-brand-frost/70 text-sm leading-relaxed max-w-xs mx-auto">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="py-24 bg-brand-white">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col md:flex-row justify-between items-end mb-16 animate-on-scroll">
+        <div class="max-w-xl">
+          <h2 class="text-fluid-h2 mb-4">Don't just take our word for it.</h2>
+          <p class="text-lg text-slate-600">See what our neighbors in {siteConfig.location.city} have to say.</p>
+        </div>
+        <div class="mt-6 md:mt-0 flex items-center space-x-2 text-brand-navy font-bold text-xl">
+          <span>{siteConfig.stats.rating}</span>
+          <div class="flex text-amber-400">
+            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          </div>
+          <span class="text-sm font-normal text-slate-500 ml-2">Average Rating</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {testimonials.map((t, i) => (
+          <div class="animate-on-scroll" style={`transition-delay: ${i * 150}ms`}>
+            <TestimonialCard {...t} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Booking & FAQ -->
+  <section class="py-24 bg-white relative">
+    <div class="absolute top-0 left-0 w-full h-1/2 bg-brand-white"></div>
+    <div class="container mx-auto px-6 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+        
+        <div class="lg:col-span-5 animate-on-scroll">
+          <h2 class="text-3xl md:text-4xl font-display font-bold text-brand-navy mb-8">Frequently Asked Questions</h2>
+          <FAQAccordion faqs={faqs} />
+          
+          <div class="mt-12 p-8 bg-brand-frost/30 rounded-3xl border border-brand-frost">
+            <h4 class="font-bold text-brand-navy mb-2">Still have questions?</h4>
+            <p class="text-sm text-slate-600 mb-6">Our experts are ready to help you with any specific queries.</p>
+            <a href={`tel:${siteConfig.contact.phone.replace(/[^0-9+]/g, '')}`} class="inline-flex items-center font-bold text-brand-accent hover:text-brand-navy transition-colors">
+              Call {siteConfig.contact.phone} &rarr;
+            </a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 animate-on-scroll">
+          <BookingForm />
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</Layout>
+
+<style>
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>

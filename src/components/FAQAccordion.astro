@@ -1,0 +1,33 @@
+---
+import { ChevronDown } from 'lucide-astro';
+
+interface Props {
+  faqs: { question: string; answer: string }[];
+}
+
+const { faqs } = Astro.props;
+---
+
+<div class="space-y-4 max-w-3xl mx-auto" itemscope itemtype="https://schema.org/FAQPage">
+  {faqs.map((faq, index) => (
+    <details class="group bg-white rounded-2xl border border-slate-200 overflow-hidden [&_summary::-webkit-details-marker]:hidden" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <summary class="flex cursor-pointer items-center justify-between gap-1.5 p-6 font-semibold text-brand-navy">
+        <span itemprop="name">{faq.question}</span>
+        <span class="shrink-0 rounded-full bg-brand-white p-1.5 text-brand-navy sm:p-3 transition duration-300 group-open:-rotate-180">
+          <ChevronDown class="w-5 h-5" />
+        </span>
+      </summary>
+      <div class="px-6 pb-6 text-slate-600 leading-relaxed" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <p itemprop="text">{faq.answer}</p>
+      </div>
+    </details>
+  ))}
+</div>
+<style>
+  details > summary { list-style: none; }
+  details[open] summary ~ * { animation: sweep .2s ease-in-out; }
+  @keyframes sweep {
+    0% { opacity: 0; transform: translateY(-10px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+</style>

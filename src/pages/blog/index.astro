@@ -1,0 +1,38 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { siteConfig } from '../../config/site';
+
+const posts = [
+  { slug: 'maintenance-tips-before-summer', title: '7 AC Maintenance Tips Before Summer Hits', date: 'March 15, 2024', excerpt: 'Ensure your AC is ready for the intense heat with these simple yet effective pre-summer checks.' },
+  { slug: 'why-ac-not-cooling', title: 'Why Your AC Isn\'t Cooling: 6 Common Causes', date: 'April 2, 2024', excerpt: 'From dirty filters to gas leaks, we break down the most common reasons your AC is blowing warm air.' },
+  { slug: 'inverter-vs-non-inverter', title: 'Inverter vs Non-Inverter AC: What to Choose?', date: 'April 18, 2024', excerpt: 'A comprehensive guide to help you decide which technology suits your home and budget best.' }
+];
+---
+
+<Layout title={`Blog & Insights | ${siteConfig.businessName}`} description="Expert tips and guides for AC maintenance and choosing the right air conditioner.">
+  <section class="pt-32 pb-24 bg-brand-white">
+    <div class="container mx-auto px-6 max-w-4xl text-center">
+      <h1 class="text-fluid-h1 mb-6">Cool Insights</h1>
+      <p class="text-xl text-slate-600">Expert tips and guides to keep your air clean and your home comfortable.</p>
+    </div>
+  </section>
+
+  <section class="py-24 bg-white">
+    <div class="container mx-auto px-6 max-w-4xl">
+      <div class="space-y-12">
+        {posts.map(post => (
+          <article class="group">
+            <p class="text-sm font-medium text-brand-accent mb-3">{post.date}</p>
+            <h2 class="text-2xl md:text-3xl font-display font-bold text-brand-navy mb-4 group-hover:text-brand-accent transition-colors">
+              {post.title}
+            </h2>
+            <p class="text-lg text-slate-600 mb-6">{post.excerpt}</p>
+            <a href="#" class="inline-flex items-center font-medium text-brand-navy group-hover:text-brand-accent transition-colors">
+              Read article &rarr;
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

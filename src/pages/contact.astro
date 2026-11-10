@@ -1,0 +1,58 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { siteConfig } from '../config/site';
+import BookingForm from '../components/BookingForm.astro';
+import { MapPin, Phone, Mail, Clock } from 'lucide-astro';
+---
+
+<Layout title={`Contact Us | ${siteConfig.businessName}`} description="Get in touch for prompt AC services.">
+  <section class="pt-32 pb-24 bg-brand-white">
+    <div class="container mx-auto px-6">
+      <div class="max-w-3xl mb-16">
+        <h1 class="text-fluid-h1 mb-6">Let's get your cooling sorted.</h1>
+        <p class="text-xl text-slate-600">Reach out for immediate assistance or to schedule an inspection.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <div class="space-y-12">
+          <div class="flex items-start space-x-6">
+            <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm shrink-0">
+              <Phone class="w-6 h-6 text-brand-accent" />
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-brand-navy mb-2">Call or WhatsApp</h3>
+              <p class="text-slate-600 mb-4">We are highly responsive during business hours.</p>
+              <div class="space-y-2">
+                <a href={`tel:${siteConfig.contact.phone.replace(/[^0-9+]/g, '')}`} class="block font-medium text-brand-navy hover:text-brand-accent transition-colors">{siteConfig.contact.phone}</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-6">
+            <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm shrink-0">
+              <MapPin class="w-6 h-6 text-brand-accent" />
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-brand-navy mb-2">Headquarters</h3>
+              <p class="text-slate-600 leading-relaxed">{siteConfig.location.address}</p>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-6">
+            <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm shrink-0">
+              <Clock class="w-6 h-6 text-brand-accent" />
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-brand-navy mb-2">Operating Hours</h3>
+              <p class="text-slate-600">{siteConfig.hours}</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <BookingForm />
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,24 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { siteConfig } from '../../config/site';
+import ServiceCard from '../../components/ServiceCard.astro';
+---
+
+<Layout title={`Our AC Services | ${siteConfig.businessName}`} description="Comprehensive AC repair, installation, and maintenance services.">
+  <section class="pt-32 pb-24 bg-brand-white">
+    <div class="container mx-auto px-6 text-center max-w-3xl">
+      <h1 class="text-fluid-h1 mb-6">Our Services</h1>
+      <p class="text-xl text-slate-600">Professional climate control solutions for your home and business.</p>
+    </div>
+  </section>
+
+  <section class="py-24 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {siteConfig.services.map(service => (
+          <ServiceCard {...service} />
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

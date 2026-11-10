@@ -1,0 +1,67 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { siteConfig } from '../../config/site';
+import BookingForm from '../../components/BookingForm.astro';
+import { CheckCircle2 } from 'lucide-astro';
+
+export function getStaticPaths() {
+  return siteConfig.services.map(service => ({
+    params: { id: service.id },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+---
+
+<Layout title={`${service.title} in ${siteConfig.location.city} | ${siteConfig.businessName}`} description={service.shortDescription}>
+  
+  <section class="pt-32 pb-16 bg-brand-white">
+    <div class="container mx-auto px-6">
+      <div class="max-w-3xl">
+        <a href="/services" class="text-sm font-medium text-brand-accent mb-6 inline-block hover:text-brand-navy transition-colors">&larr; All Services</a>
+        <h1 class="text-fluid-h1 mb-6">{service.title}</h1>
+        <p class="text-xl text-slate-600 mb-8">{service.shortDescription}</p>
+        <div class="inline-flex items-center space-x-2 bg-white px-4 py-2 rounded-full border border-slate-200 shadow-sm">
+          <span class="text-sm text-slate-500">Starting from</span>
+          <span class="font-bold text-brand-navy">{service.priceLabel ? service.priceLabel : `₹${service.startingPrice}`}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+        <div class="lg:col-span-7">
+          <h2 class="text-3xl font-display font-bold mb-8">What's included in this service?</h2>
+          <div class="space-y-6 mb-12">
+            {[
+              "Thorough inspection and diagnosis",
+              "Transparent upfront pricing",
+              "Use of genuine manufacturer parts",
+              "Post-service cleanup",
+              "90-day service warranty"
+            ].map((item: string) => (
+              <div class="flex items-start space-x-4">
+                <CheckCircle2 class="w-6 h-6 text-brand-accent shrink-0 mt-0.5" />
+                <p class="text-lg text-slate-700">{item}</p>
+              </div>
+            ))}
+          </div>
+          
+          <h2 class="text-3xl font-display font-bold mb-6">Brands we service</h2>
+          <p class="text-slate-600 leading-relaxed mb-12">
+            Our certified technicians are trained to handle all major brands including {siteConfig.brands.slice(0, -1).join(', ')}, and {siteConfig.brands[siteConfig.brands.length - 1]}.
+          </p>
+        </div>
+        
+        <div class="lg:col-span-5">
+          <div class="sticky top-24">
+            <BookingForm />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

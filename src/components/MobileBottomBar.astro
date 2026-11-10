@@ -1,0 +1,22 @@
+---
+import { siteConfig } from '../config/site';
+import { Phone, MessageCircle } from 'lucide-astro';
+---
+
+<div class="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-slate-200 z-50 p-3 pb-safe shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.1)]">
+  <div class="grid grid-cols-2 gap-3">
+    <a href={`tel:${siteConfig.contact.phone.replace(/[^0-9+]/g, '')}`} class="flex items-center justify-center space-x-2 bg-brand-frost/50 text-brand-navy rounded-full py-3 font-medium">
+      <Phone class="w-5 h-5" />
+      <span>Call Now</span>
+    </a>
+    <a href={`https://wa.me/${siteConfig.contact.whatsapp.replace(/[^0-9+]/g, '')}?text=Hi, I need help with my AC.`} target="_blank" rel="noopener noreferrer" class="flex items-center justify-center space-x-2 bg-[#25D366] text-white rounded-full py-3 font-medium shadow-md shadow-green-500/20">
+      <MessageCircle class="w-5 h-5" />
+      <span>WhatsApp</span>
+    </a>
+  </div>
+</div>
+<style>
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0.75rem);
+  }
+</style>

@@ -1,0 +1,32 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { siteConfig } from '../config/site';
+---
+
+<Layout title={`Privacy Policy | ${siteConfig.businessName}`} description="Privacy Policy">
+  <section class="pt-32 pb-24 bg-white">
+    <div class="container mx-auto px-6 max-w-3xl prose prose-slate prose-a:text-brand-accent">
+      <h1 class="text-fluid-h2 font-display font-bold text-brand-navy mb-8">Privacy Policy</h1>
+      <p class="text-slate-600 mb-6">Last updated: {new Date().toLocaleDateString()}</p>
+      
+      <p class="text-slate-600 mb-6">
+        At {siteConfig.businessName}, we respect your privacy and are committed to protecting your personal data. This privacy policy informs you about how we look after your personal data when you visit our website and tells you about your privacy rights.
+      </p>
+
+      <h2 class="text-2xl font-bold text-brand-navy mt-12 mb-4">1. Information We Collect</h2>
+      <p class="text-slate-600 mb-6">
+        We may collect, use, store and transfer different kinds of personal data about you when you fill out our booking forms, including:
+      </p>
+      <ul class="list-disc pl-6 text-slate-600 mb-6 space-y-2">
+        <li>Identity Data (First name, Last name)</li>
+        <li>Contact Data (Email address, Telephone numbers)</li>
+        <li>Location Data (Address, Service Area)</li>
+      </ul>
+
+      <h2 class="text-2xl font-bold text-brand-navy mt-12 mb-4">2. How We Use Your Data</h2>
+      <p class="text-slate-600 mb-6">
+        We will only use your personal data to provide the services you have requested, manage our relationship with you, and improve our services.
+      </p>
+    </div>
+  </section>
+</Layout>
