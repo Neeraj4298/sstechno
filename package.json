@@ -1,5 +1,5 @@
 {
-  "name": "ss-techno-ac-care",
+  "name": "ss-techno-appliances",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -10,9 +10,11 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.1.6",
     "@astrojs/tailwind": "^5.1.0",
+    "@tailwindcss/typography": "^0.5.20",
     "astro": "^4.16.10",
-    "tailwindcss": "^3.4.14",
-    "lucide-astro": "^0.428.0"
+    "lucide-astro": "^0.428.0",
+    "tailwindcss": "^3.4.14"
   }
 }

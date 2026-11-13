@@ -1,31 +1,37 @@
 ---
-import { Star } from 'lucide-astro';
+import { Quote } from 'lucide-astro';
+import { siteConfig } from '../config/site';
 
 interface Props {
-  name: string;
-  location: string;
-  service: string;
   text: string;
-  rating?: number;
+  author?: string | null;
+  name?: string | null;
+  location?: string | null;
+  service?: string | null;
 }
 
-const { name, location, service, text, rating = 5 } = Astro.props;
+const { text, author = null, name = null, location = null, service = null } = Astro.props;
+const displayName = author || name || null;
+const subtitleParts = [location || siteConfig.location.city, service].filter(Boolean);
 ---
 
-<div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm flex flex-col h-full">
-  <div class="flex space-x-1 text-amber-400 mb-6">
-    {Array.from({ length: 5 }).map((_, i) => (
-      <Star class={`w-4 h-4 ${i < rating ? 'fill-current' : 'text-slate-200'}`} />
-    ))}
+<div class="bg-white p-7 rounded-2xl border border-brand-line shadow-sm flex flex-col h-full">
+  <div class="w-10 h-10 rounded-xl bg-brand-mist text-brand-accent flex items-center justify-center mb-5 shrink-0">
+    <Quote class="w-5 h-5" />
   </div>
-  <p class="text-slate-700 mb-8 flex-grow leading-relaxed">"{text}"</p>
-  <div class="flex items-center mt-auto">
-    <div class="w-12 h-12 bg-brand-frost rounded-full flex items-center justify-center text-brand-navy font-bold text-lg mr-4">
-      {name.charAt(0)}
+  <p class="text-slate-700 mb-6 flex-grow leading-relaxed text-base">"{text}"</p>
+  <div class="flex items-center mt-auto pt-4 border-t border-brand-line">
+    <div class="w-10 h-10 bg-brand-mist rounded-full flex items-center justify-center text-brand-ink font-bold text-sm mr-3 shrink-0">
+      {displayName ? displayName.charAt(0).toUpperCase() : <Quote class="w-4 h-4 text-brand-accent" />}
     </div>
     <div>
-      <h4 class="font-bold text-brand-navy">{name}</h4>
-      <p class="text-sm text-slate-500">{location} • {service}</p>
+      <p class="font-semibold text-brand-ink text-sm">
+        {displayName ? displayName : `Customer, ${siteConfig.location.city}`}
+      </p>
+      {displayName && subtitleParts.length > 0 && (
+        <p class="text-xs text-slate-600">{subtitleParts.join(' • ')}</p>
+      )}
     </div>
   </div>
 </div>
+

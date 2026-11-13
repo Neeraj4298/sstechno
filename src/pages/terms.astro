@@ -1,23 +1,48 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { siteConfig } from '../config/site';
+import { primaryPhone, telHref } from '../lib/contact';
+
+const primary = primaryPhone();
 ---
 
-<Layout title={`Terms of Service | ${siteConfig.businessName}`} description="Terms of Service">
-  <section class="pt-32 pb-24 bg-white">
-    <div class="container mx-auto px-6 max-w-3xl prose prose-slate">
-      <h1 class="text-fluid-h2 font-display font-bold text-brand-navy mb-8">Terms of Service</h1>
-      <p class="text-slate-600 mb-6">Last updated: {new Date().toLocaleDateString()}</p>
-      
-      <h2 class="text-2xl font-bold text-brand-navy mt-12 mb-4">1. Service Agreement</h2>
-      <p class="text-slate-600 mb-6">
-        By booking a service with {siteConfig.businessName}, you agree to these terms. We will provide a written quote before commencing any repair work. The initial inspection is free only if the repair quote is accepted; otherwise, a visiting fee applies.
-      </p>
+<Layout
+  title={`Terms of Service | ${siteConfig.shortName}`}
+  description={`Terms of Service for ${siteConfig.businessName} in ${siteConfig.location.city}, ${siteConfig.location.state}.`}
+>
+  <section class="pt-32 pb-20 md:pt-36 md:pb-24 bg-brand-paper">
+    <div class="container mx-auto px-6 max-w-3xl">
+      <div class="bg-white p-8 md:p-12 rounded-2xl border border-brand-line shadow-sm prose prose-slate max-w-none prose-headings:font-display prose-headings:text-brand-ink prose-a:text-brand-accent">
+        <h1>Terms of Service</h1>
+        <p class="text-sm text-slate-500">Last updated: November 12, 2026</p>
 
-      <h2 class="text-2xl font-bold text-brand-navy mt-12 mb-4">2. Warranty</h2>
-      <p class="text-slate-600 mb-6">
-        We offer a 90-day warranty on our workmanship and any new parts supplied and installed by us. This warranty does not cover issues unrelated to our repair or damages caused by misuse.
-      </p>
+        <h2>1. Scope of Services</h2>
+        <p>
+          {siteConfig.businessName} provides inspection, troubleshooting, repair, maintenance, and spare parts support for home appliances in {siteConfig.location.city}, {siteConfig.location.state} and nearby areas, subject to technician and service availability.
+        </p>
+
+        <h2>2. Inspection & Repair Estimate</h2>
+        <p>
+          Our technician will inspect the appliance to identify the issue. The required repair solution and repair estimate will be explained clearly before any repair work proceeds.
+        </p>
+
+        <h2>3. Spare Parts & Compatibility</h2>
+        <p>
+          Replacement components and spare parts are provided subject to stock availability and model compatibility.
+        </p>
+
+        <h2>4. Customer Responsibilities</h2>
+        <p>
+          Customers are requested to provide accurate appliance and location details when scheduling a visit and ensure safe access to the appliance during the technician's visit.
+        </p>
+
+        <h2>5. Contact Information</h2>
+        <p>
+          For questions regarding our services or terms, please contact {siteConfig.businessName} at{' '}
+          <a href={telHref(primary.e164)}>{primary.display}</a>.
+        </p>
+      </div>
     </div>
   </section>
 </Layout>
+

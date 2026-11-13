@@ -4,32 +4,35 @@
 
 @layer base {
   :root {
-    --brand-navy: #0A0A0A;
-    --brand-white: #FFFFFF;
-    --brand-frost: #F5F5F7;
-    --brand-accent: #B89B5E;
+    --brand-ink: #0B0F14;
+    --brand-paper: #FAFAF8;
+    --brand-mist: #F1F3F2;
+    --brand-accent: #0F766E;
+    --brand-accent-light: #2DD4BF;
+    --brand-line: #E5E7EB;
   }
-  
+
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
 
   body {
-    @apply bg-brand-white text-slate-600 font-sans antialiased selection:bg-brand-frost selection:text-brand-navy;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-display text-brand-navy font-semibold tracking-tight;
+    @apply bg-brand-paper text-slate-700 font-sans antialiased selection:bg-brand-mist selection:text-brand-ink overflow-x-hidden;
   }
 
-  /* Fluid typography utilities if needed */
-  .text-fluid-h1 { font-size: clamp(2.5rem, 5vw + 1rem, 4.5rem); line-height: 1.05; letter-spacing: -0.03em; }
-  .text-fluid-h2 { font-size: clamp(2rem, 4vw + 1rem, 3.5rem); line-height: 1.1; letter-spacing: -0.02em; }
-  .text-fluid-h3 { font-size: clamp(1.5rem, 3vw + 1rem, 2.5rem); line-height: 1.2; letter-spacing: -0.01em; }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display text-brand-ink font-semibold tracking-tight;
+  }
+
+  .text-fluid-h1 { font-size: clamp(2.25rem, 4.5vw + 1rem, 4rem); line-height: 1.08; letter-spacing: -0.03em; }
+  .text-fluid-h2 { font-size: clamp(1.75rem, 3.5vw + 0.75rem, 3rem); line-height: 1.12; letter-spacing: -0.02em; }
+  .text-fluid-h3 { font-size: clamp(1.35rem, 2.5vw + 0.75rem, 2.25rem); line-height: 1.2; letter-spacing: -0.01em; }
 }
 
 @layer utilities {
   .glass {
-    @apply bg-white/80 backdrop-blur-md border border-white/20;
+    @apply bg-brand-paper/90 backdrop-blur-md border-b border-brand-line;
   }
 }
+

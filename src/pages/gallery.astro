@@ -1,0 +1,66 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { siteConfig } from '../config/site';
+import { Wrench } from 'lucide-astro';
+
+/*
+ * HOW TO SWAP IN REAL GALLERY IMAGES:
+ * 1. Place optimized WebP/AVIF photos inside `public/gallery/` (for example, `public/gallery/ac-servicing.webp`).
+ * 2. In `src/config/site.ts`, update the corresponding item in `siteConfig.gallery` by setting `src: "/gallery/ac-servicing.webp"`.
+ * 3. When `src` is non-null, this page automatically renders the `<img>` with `loading="lazy"` and explicit dimensions.
+ */
+---
+
+<Layout
+  title={`Service Gallery | ${siteConfig.shortName} ${siteConfig.location.city}`}
+  description={`Gallery of appliance repair, servicing and spare parts work by ${siteConfig.businessName} in ${siteConfig.location.city}, ${siteConfig.location.state}.`}
+>
+  <section class="pt-32 pb-16 md:pt-36 md:pb-20 bg-brand-ink text-white">
+    <div class="container mx-auto px-6 max-w-3xl">
+      <p class="text-xs font-semibold uppercase tracking-widest text-brand-accent-light mb-3">
+        Our Work
+      </p>
+      <h1 class="text-fluid-h1 text-white mb-4">Service Gallery</h1>
+      <p class="text-lg text-slate-300">
+        Appliance inspection, repair, maintenance and spare parts service in {siteConfig.location.city}.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-16 md:py-24 bg-brand-paper">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {siteConfig.gallery.map((item) => (
+          <figure class="rounded-2xl border border-brand-line bg-white overflow-hidden shadow-sm flex flex-col">
+            {item.src ? (
+              <img
+                src={item.src}
+                alt={item.alt}
+                width="640"
+                height="480"
+                loading="lazy"
+                class="w-full aspect-[4/3] object-cover"
+              />
+            ) : (
+              /* PLACEHOLDER tile rendered when item.src is null */
+              <div class="w-full aspect-[4/3] bg-gradient-to-br from-brand-mist via-white to-brand-mist flex flex-col items-center justify-center p-6 text-center">
+                <div class="w-12 h-12 rounded-2xl bg-white border border-brand-line text-brand-accent flex items-center justify-center mb-3 shadow-sm">
+                  <Wrench class="w-6 h-6" />
+                </div>
+                <span class="font-display font-semibold text-brand-ink text-base">
+                  {item.label}
+                </span>
+                <span class="text-xs text-slate-500 mt-1">
+                  {siteConfig.shortName} • {siteConfig.location.city}
+                </span>
+              </div>
+            )}
+            <figcaption class="px-5 py-4 border-t border-brand-line text-sm font-medium text-brand-ink">
+              {item.label}
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

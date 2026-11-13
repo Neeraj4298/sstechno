@@ -1,16 +1,26 @@
 ---
-import { siteConfig } from '../config/site';
+import { primaryPhone, telHref, waHref } from '../lib/contact';
 import { Phone, MessageCircle } from 'lucide-astro';
+
+const primary = primaryPhone();
 ---
 
-<div class="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-slate-200 z-50 p-3 pb-safe shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.1)]">
+<div class="md:hidden fixed bottom-0 left-0 w-full bg-brand-paper border-t border-brand-line z-50 p-3 pb-safe shadow-sm">
   <div class="grid grid-cols-2 gap-3">
-    <a href={`tel:${siteConfig.contact.phone.replace(/[^0-9+]/g, '')}`} class="flex items-center justify-center space-x-2 bg-brand-frost/50 text-brand-navy rounded-full py-3 font-medium">
-      <Phone class="w-5 h-5" />
+    <a
+      href={telHref(primary.e164)}
+      class="flex items-center justify-center space-x-2 border border-brand-ink bg-white text-brand-ink rounded-xl py-3 font-medium text-sm"
+    >
+      <Phone class="w-4 h-4 text-brand-accent" />
       <span>Call Now</span>
     </a>
-    <a href={`https://wa.me/${siteConfig.contact.whatsapp.replace(/[^0-9+]/g, '')}?text=Hi, I need help with my AC.`} target="_blank" rel="noopener noreferrer" class="flex items-center justify-center space-x-2 bg-[#25D366] text-white rounded-full py-3 font-medium shadow-md shadow-green-500/20">
-      <MessageCircle class="w-5 h-5" />
+    <a
+      href={waHref('Hi, I need help with my appliance.')}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="flex items-center justify-center space-x-2 bg-brand-accent text-white rounded-xl py-3 font-medium text-sm shadow-sm"
+    >
+      <MessageCircle class="w-4 h-4" />
       <span>WhatsApp</span>
     </a>
   </div>
@@ -20,3 +30,4 @@ import { Phone, MessageCircle } from 'lucide-astro';
     padding-bottom: env(safe-area-inset-bottom, 0.75rem);
   }
 </style>
+

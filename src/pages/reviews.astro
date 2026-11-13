@@ -1,0 +1,47 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { siteConfig } from '../config/site';
+import TestimonialCard from '../components/TestimonialCard.astro';
+---
+
+<Layout
+  title={`Customer Reviews | ${siteConfig.shortName} ${siteConfig.location.city}`}
+  description={`Read customer feedback for ${siteConfig.businessName} in ${siteConfig.location.city}, ${siteConfig.location.state}.`}
+>
+  <section class="pt-32 pb-16 md:pt-36 md:pb-20 bg-brand-ink text-white">
+    <div class="container mx-auto px-6 max-w-3xl">
+      <p class="text-xs font-semibold uppercase tracking-widest text-brand-accent-light mb-3">
+        Testimonials
+      </p>
+      <h1 class="text-fluid-h1 text-white mb-4">Customer Reviews</h1>
+      <p class="text-lg text-slate-300">
+        Feedback from homeowners across {siteConfig.location.city} who used our doorstep appliance repair service.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-16 md:py-24 bg-brand-paper">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+        {siteConfig.reviews.map((review) => (
+          <TestimonialCard text={review.text} author={review.author} />
+        ))}
+      </div>
+
+      <div class="max-w-2xl mx-auto text-center bg-white p-8 rounded-2xl border border-brand-line shadow-sm">
+        <h2 class="text-2xl font-display font-bold text-brand-ink mb-2">
+          Need help with your home appliance?
+        </h2>
+        <p class="text-slate-700 text-sm mb-6">
+          Contact our team in {siteConfig.location.city} to schedule a technician visit.
+        </p>
+        <a
+          href="/contact#booking"
+          class="inline-block bg-brand-accent text-white px-7 py-3.5 rounded-xl font-semibold text-sm hover:bg-brand-accent/90 transition-colors"
+        >
+          Book a Service
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

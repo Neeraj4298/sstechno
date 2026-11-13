@@ -1,58 +1,152 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { siteConfig } from '../config/site';
+import { telHref, waHref } from '../lib/contact';
 import BookingForm from '../components/BookingForm.astro';
-import { MapPin, Phone, Mail, Clock } from 'lucide-astro';
+import { MapPin, Phone, Mail, Clock, MessageCircle, UserCheck, ExternalLink } from 'lucide-astro';
 ---
 
-<Layout title={`Contact Us | ${siteConfig.businessName}`} description="Get in touch for prompt AC services.">
-  <section class="pt-32 pb-24 bg-brand-white">
-    <div class="container mx-auto px-6">
-      <div class="max-w-3xl mb-16">
-        <h1 class="text-fluid-h1 mb-6">Let's get your cooling sorted.</h1>
-        <p class="text-xl text-slate-600">Reach out for immediate assistance or to schedule an inspection.</p>
-      </div>
+<Layout
+  title={`Contact Us | ${siteConfig.shortName} ${siteConfig.location.city}`}
+  description={`Contact ${siteConfig.businessName} in ${siteConfig.location.city}, ${siteConfig.location.state}. Call 8897052019 or 6304751159 for doorstep appliance repair.`}
+>
+  <section class="pt-32 pb-16 md:pt-36 md:pb-20 bg-brand-ink text-white">
+    <div class="container mx-auto px-6 max-w-3xl">
+      <p class="text-xs font-semibold uppercase tracking-widest text-brand-accent-light mb-3">
+        Get in Touch
+      </p>
+      <h1 class="text-fluid-h1 text-white mb-4">Contact {siteConfig.shortName}</h1>
+      <p class="text-lg text-slate-300">
+        Call or WhatsApp us to schedule doorstep appliance inspection and repair in {siteConfig.location.city}.
+      </p>
+    </div>
+  </section>
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
-        <div class="space-y-12">
-          <div class="flex items-start space-x-6">
-            <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm shrink-0">
-              <Phone class="w-6 h-6 text-brand-accent" />
+  <section class="py-16 md:py-24 bg-brand-paper">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <div class="lg:col-span-5 space-y-6">
+          <div class="bg-white p-7 rounded-2xl border border-brand-line shadow-sm space-y-5">
+            <h2 class="text-xl font-display font-bold text-brand-ink">Call or WhatsApp</h2>
+            <div class="space-y-4">
+              {siteConfig.contact.phones.map((phone) => (
+                <div
+                  class={`p-4 rounded-xl border ${
+                    phone.primary
+                      ? 'border-brand-accent/40 bg-brand-mist/60'
+                      : 'border-brand-line bg-brand-paper'
+                  }`}
+                >
+                  <span class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-3">
+                    {phone.primary ? 'Primary Phone' : 'Alternate Phone'}
+                  </span>
+                  <div class="flex flex-col sm:flex-row gap-2.5">
+                    <a
+                      href={telHref(phone.e164)}
+                      class={`flex-1 inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl font-semibold text-sm transition-colors ${
+                        phone.primary
+                          ? 'bg-brand-ink text-white hover:bg-brand-ink/90'
+                          : 'border border-brand-ink text-brand-ink bg-white hover:bg-brand-mist'
+                      }`}
+                    >
+                      <Phone class="w-4 h-4 text-brand-accent-light" />
+                      <span>{phone.display}</span>
+                    </a>
+                    <a
+                      href={waHref('Hi, I need help with my appliance.', phone.whatsapp)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class={`inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl font-semibold text-sm transition-colors ${
+                        phone.primary
+                          ? 'bg-brand-accent text-white hover:bg-brand-accent/90'
+                          : 'border border-brand-accent text-brand-accent bg-white hover:bg-brand-mist'
+                      }`}
+                    >
+                      <MessageCircle class="w-4 h-4" />
+                      <span>WhatsApp</span>
+                    </a>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div>
-              <h3 class="text-xl font-bold text-brand-navy mb-2">Call or WhatsApp</h3>
-              <p class="text-slate-600 mb-4">We are highly responsive during business hours.</p>
-              <div class="space-y-2">
-                <a href={`tel:${siteConfig.contact.phone.replace(/[^0-9+]/g, '')}`} class="block font-medium text-brand-navy hover:text-brand-accent transition-colors">{siteConfig.contact.phone}</a>
+          </div>
+
+
+          <div class="bg-white p-7 rounded-2xl border border-brand-line shadow-sm space-y-5">
+            <div class="flex items-start gap-3.5">
+              <div class="w-10 h-10 rounded-xl bg-brand-mist text-brand-accent flex items-center justify-center shrink-0">
+                <MapPin class="w-5 h-5" />
+              </div>
+              <div>
+                <h3 class="font-display font-bold text-brand-ink text-base mb-1">
+                  Location & Service Area
+                </h3>
+                {siteConfig.location.address && (
+                  <p class="text-sm text-brand-ink font-medium mb-1">
+                    {siteConfig.location.address}
+                  </p>
+                )}
+                <p class="text-sm text-slate-700 font-medium">
+                  {siteConfig.location.city}, {siteConfig.location.state}
+                </p>
+                <p class="text-xs text-slate-600 mt-1">
+                  {siteConfig.location.serviceAreaText}
+                </p>
+                {siteConfig.location.mapUrl && (
+                  <a
+                    href={siteConfig.location.mapUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-accent hover:text-brand-ink transition-colors"
+                  >
+                    <span>View on Google Maps</span>
+                    <ExternalLink class="w-4 h-4" />
+                  </a>
+                )}
               </div>
             </div>
-          </div>
 
-          <div class="flex items-start space-x-6">
-            <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm shrink-0">
-              <MapPin class="w-6 h-6 text-brand-accent" />
+            <div class="flex items-start gap-3.5 pt-4 border-t border-brand-line">
+              <div class="w-10 h-10 rounded-xl bg-brand-mist text-brand-accent flex items-center justify-center shrink-0">
+                <Clock class="w-5 h-5" />
+              </div>
+              <div>
+                <h3 class="font-display font-bold text-brand-ink text-base mb-1">Working Hours</h3>
+                <p class="text-sm text-slate-700">{siteConfig.hours}</p>
+              </div>
             </div>
-            <div>
-              <h3 class="text-xl font-bold text-brand-navy mb-2">Headquarters</h3>
-              <p class="text-slate-600 leading-relaxed">{siteConfig.location.address}</p>
-            </div>
-          </div>
 
-          <div class="flex items-start space-x-6">
-            <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm shrink-0">
-              <Clock class="w-6 h-6 text-brand-accent" />
+            <div class="flex items-start gap-3.5 pt-4 border-t border-brand-line">
+              <div class="w-10 h-10 rounded-xl bg-brand-mist text-brand-accent flex items-center justify-center shrink-0">
+                <UserCheck class="w-5 h-5" />
+              </div>
+              <div>
+                <h3 class="font-display font-bold text-brand-ink text-base mb-1">Proprietors</h3>
+                <p class="text-sm text-slate-700">{siteConfig.proprietors.join(' & ')}</p>
+              </div>
             </div>
-            <div>
-              <h3 class="text-xl font-bold text-brand-navy mb-2">Operating Hours</h3>
-              <p class="text-slate-600">{siteConfig.hours}</p>
-            </div>
+
+            {siteConfig.contact.email && (
+              <div class="flex items-start gap-3.5 pt-4 border-t border-brand-line">
+                <div class="w-10 h-10 rounded-xl bg-brand-mist text-brand-accent flex items-center justify-center shrink-0">
+                  <Mail class="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 class="font-display font-bold text-brand-ink text-base mb-1">Email</h3>
+                  <a href={`mailto:${siteConfig.contact.email}`} class="text-sm text-brand-accent hover:underline">
+                    {siteConfig.contact.email}
+                  </a>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
-        <div>
-          <BookingForm />
+        <div class="lg:col-span-7">
+          <BookingForm id="booking" />
         </div>
       </div>
     </div>
   </section>
 </Layout>
+

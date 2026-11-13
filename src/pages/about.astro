@@ -1,43 +1,115 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { siteConfig } from '../config/site';
+import { primaryPhone, telHref, waHref } from '../lib/contact';
+import { CheckCircle2, UserCheck, Target, Phone, MessageCircle } from 'lucide-astro';
+
+const primary = primaryPhone();
 ---
 
-<Layout title={`About Us | ${siteConfig.businessName}`} description={`Learn about ${siteConfig.businessName}, our mission, and our commitment to premium AC service.`}>
-  <section class="pt-32 pb-24 bg-brand-navy text-white">
+<Layout
+  title={`About Us | ${siteConfig.shortName} in ${siteConfig.location.city}`}
+  description={`Learn about ${siteConfig.businessName} in ${siteConfig.location.city}, ${siteConfig.location.state}. Multi-brand home appliance repair and doorstep assistance.`}
+>
+  <section class="pt-32 pb-16 md:pt-36 md:pb-20 bg-brand-ink text-white">
     <div class="container mx-auto px-6 max-w-4xl">
-      <h1 class="text-fluid-h1 mb-8">Redefining AC Care in {siteConfig.location.city}</h1>
-      <p class="text-xl text-brand-frost/90 leading-relaxed">
-        For over {siteConfig.stats.years} years, we've been on a mission to elevate the standard of home services. We believe that inviting a technician into your home shouldn't be stressful.
+      <p class="text-xs font-semibold uppercase tracking-widest text-brand-accent-light mb-3">
+        About {siteConfig.shortName}
+      </p>
+      <h1 class="text-fluid-h1 text-white mb-6">
+        Your Trusted Multi-Brand Appliance Repair Service
+      </h1>
+      <p class="text-lg md:text-xl text-slate-300 leading-relaxed">
+        {siteConfig.businessName} provides professional home appliance repair and maintenance in {siteConfig.location.city}, {siteConfig.location.state}.
       </p>
     </div>
   </section>
 
-  <section class="py-24 bg-white">
-    <div class="container mx-auto px-6">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        <div>
-          <!-- PLACEHOLDER: Team working or founder -->
-          <div class="aspect-square bg-slate-100 rounded-3xl overflow-hidden relative">
-            <img src="https://images.unsplash.com/photo-1574360741628-8686d11a2f64?q=80&w=1200&auto=format&fit=crop" alt="Team at work" class="w-full h-full object-cover" />
+  <section class="py-16 md:py-24 bg-brand-paper">
+    <div class="container mx-auto px-6 max-w-5xl">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <div class="lg:col-span-7 space-y-6">
+          <h2 class="text-2xl md:text-3xl font-display font-bold text-brand-ink">
+            Clear Diagnosis & Practical Repair Solutions
+          </h2>
+          <p class="text-slate-700 leading-relaxed">
+            {siteConfig.shortName} provides professional home appliance repair and maintenance in {siteConfig.location.city}, {siteConfig.location.state}. Our technicians focus on identifying the actual problem, explaining the repair clearly and providing practical solutions.
+          </p>
+          <p class="text-slate-700 leading-relaxed">
+            Our service covers cooling problems in ACs and refrigerators, washing machine faults (front-load and top-load) and microwave oven issues, along with appliance spare parts and routine maintenance. We offer convenient doorstep assistance across {siteConfig.location.city} and nearby areas, subject to service availability.
+          </p>
+
+          <div class="bg-white p-7 rounded-2xl border border-brand-line shadow-sm">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-xl bg-brand-mist text-brand-accent flex items-center justify-center">
+                <Target class="w-5 h-5" />
+              </div>
+              <h3 class="text-lg font-display font-bold text-brand-ink">Our Mission</h3>
+            </div>
+            <p class="text-slate-700 leading-relaxed font-medium">
+              "{siteConfig.mission}"
+            </p>
           </div>
-        </div>
-        <div>
-          <h2 class="text-3xl font-display font-bold text-brand-navy mb-6">Our Philosophy</h2>
-          <p class="text-lg text-slate-600 mb-6 leading-relaxed">
-            Most local repair services operate on a "break-fix" mentality with little regard for customer experience. We built {siteConfig.businessName} differently. 
-          </p>
-          <p class="text-lg text-slate-600 mb-8 leading-relaxed">
-            We invest in continuous training for our technicians, use state-of-the-art diagnostic tools, and insist on transparent pricing. When you choose us, you're not just getting a repair; you're getting peace of mind.
-          </p>
-          <div class="grid grid-cols-2 gap-8 py-8 border-t border-slate-100">
-            <div>
-              <div class="text-4xl font-display font-bold text-brand-accent mb-2">{siteConfig.stats.homesServed}</div>
-              <div class="text-sm font-medium text-slate-500 uppercase tracking-wider">Homes Served</div>
+
+          <div class="bg-white p-7 rounded-2xl border border-brand-line shadow-sm flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-brand-mist text-brand-accent flex items-center justify-center shrink-0">
+              <UserCheck class="w-5 h-5" />
             </div>
             <div>
-              <div class="text-4xl font-display font-bold text-brand-accent mb-2">{siteConfig.stats.rating}</div>
-              <div class="text-sm font-medium text-slate-500 uppercase tracking-wider">Average Rating</div>
+              <h3 class="text-base font-display font-bold text-brand-ink mb-1">
+                Proprietors: {siteConfig.proprietors.join(' & ')}
+              </h3>
+              {siteConfig.location.address && (
+                <p class="text-sm font-medium text-brand-ink mb-1">
+                  Shop Address: {siteConfig.location.address}
+                </p>
+              )}
+              <p class="text-sm text-slate-700">
+                {siteConfig.location.serviceAreaText}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5">
+          <div class="bg-white p-7 md:p-8 rounded-2xl border border-brand-line shadow-sm">
+            <h3 class="text-xl font-display font-bold text-brand-ink mb-5">
+              Why Customers Choose Us
+            </h3>
+            <ul class="space-y-3.5 mb-8">
+              {siteConfig.whyChoose.map((item) => (
+                <li class="flex items-center gap-3 text-sm font-medium text-brand-ink">
+                  <CheckCircle2 class="w-4 h-4 text-brand-accent shrink-0" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div class="pt-6 border-t border-brand-line space-y-3">
+              <a
+                href="/contact#booking"
+                class="block w-full bg-brand-accent text-white py-3 px-5 rounded-xl font-semibold text-sm text-center hover:bg-brand-accent/90 transition-colors"
+              >
+                Book a Service
+              </a>
+              <div class="grid grid-cols-2 gap-3">
+                <a
+                  href={telHref(primary.e164)}
+                  class="flex items-center justify-center gap-1.5 border border-brand-ink text-brand-ink py-2.5 px-4 rounded-xl font-medium text-sm hover:bg-brand-mist transition-colors"
+                >
+                  <Phone class="w-4 h-4 text-brand-accent" />
+                  <span>Call Us</span>
+                </a>
+                <a
+                  href={waHref('Hi, I need help with my appliance.')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center justify-center gap-1.5 border border-brand-line bg-brand-paper text-brand-ink py-2.5 px-4 rounded-xl font-medium text-sm hover:bg-brand-mist transition-colors"
+                >
+                  <MessageCircle class="w-4 h-4 text-brand-accent" />
+                  <span>WhatsApp</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -45,3 +117,4 @@ import { siteConfig } from '../config/site';
     </div>
   </section>
 </Layout>
+

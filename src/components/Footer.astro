@@ -1,52 +1,116 @@
 ---
 import { siteConfig } from '../config/site';
+import Logo from './Logo.astro';
+import { telHref, waHref } from '../lib/contact';
+import { Phone, MapPin, Clock, MessageCircle, Mail } from 'lucide-astro';
+
+const quickLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'About Us' },
+  { href: '/services', label: 'Services' },
+  { href: '/gallery', label: 'Gallery' },
+  { href: '/reviews', label: 'Reviews' },
+  { href: '/contact', label: 'Contact' },
+];
 ---
 
-<footer class="bg-brand-navy text-brand-frost pt-20 pb-24 md:pb-8">
+<footer class="bg-brand-ink text-slate-300 pt-16 pb-28 md:pb-12 border-t border-white/10">
   <div class="container mx-auto px-6">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-      <div class="col-span-1 md:col-span-1">
-        <a href="/" class="text-2xl font-display font-bold text-white mb-4 block">
-          {siteConfig.businessName}
-        </a>
-        <p class="text-brand-frost/80 mb-6">{siteConfig.tagline}</p>
-        <p class="text-sm text-brand-frost/60 mb-2">{siteConfig.location.address}</p>
-        <p class="text-sm text-brand-frost/60">{siteConfig.hours}</p>
-      </div>
-      
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-14">
       <div>
-        <h4 class="text-white font-semibold mb-6">Services</h4>
-        <ul class="space-y-4">
-          {siteConfig.services.map(s => (
-            <li><a href={`/services/${s.id}`} class="text-brand-frost/80 hover:text-white transition-colors">{s.title}</a></li>
+        <a href="/" class="inline-block mb-4" aria-label={siteConfig.shortName}>
+          <Logo dark={true} showDescriptor={true} />
+        </a>
+        <p class="text-sm font-semibold text-white mb-1">{siteConfig.businessName}</p>
+        <p class="text-xs font-medium text-brand-accent-light tracking-wide uppercase mb-3">
+          {siteConfig.footerLine}
+        </p>
+        <p class="text-sm text-slate-300 italic mb-4">"{siteConfig.tagline}"</p>
+        <p class="text-xs text-slate-400">
+          Proprietors: {siteConfig.proprietors.join(' & ')}
+        </p>
+      </div>
+
+      <div>
+        <h3 class="text-white font-display font-semibold text-base mb-4">Quick Links</h3>
+        <ul class="space-y-2.5 text-sm">
+          {quickLinks.map((link) => (
+            <li>
+              <a href={link.href} class="text-slate-300 hover:text-brand-accent-light transition-colors">
+                {link.label}
+              </a>
+            </li>
           ))}
         </ul>
       </div>
 
       <div>
-        <h4 class="text-white font-semibold mb-6">Company</h4>
-        <ul class="space-y-4">
-          <li><a href="/about" class="text-brand-frost/80 hover:text-white transition-colors">About Us</a></li>
-          <li><a href="/blog" class="text-brand-frost/80 hover:text-white transition-colors">Blog</a></li>
-          <li><a href="/contact" class="text-brand-frost/80 hover:text-white transition-colors">Contact</a></li>
+        <h3 class="text-white font-display font-semibold text-base mb-4">Our Services</h3>
+        <ul class="space-y-2.5 text-sm">
+          {siteConfig.services.map((s) => (
+            <li>
+              <a href={`/services/${s.id}`} class="text-slate-300 hover:text-brand-accent-light transition-colors">
+                {s.title}
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
 
       <div>
-        <h4 class="text-white font-semibold mb-6">Contact</h4>
-        <ul class="space-y-4 text-brand-frost/80">
-          <li><a href={`tel:${siteConfig.contact.phone.replace(/[^0-9+]/g, '')}`} class="hover:text-white transition-colors">{siteConfig.contact.phone}</a></li>
-          <li><a href={`mailto:${siteConfig.contact.email}`} class="hover:text-white transition-colors">{siteConfig.contact.email}</a></li>
+        <h3 class="text-white font-display font-semibold text-base mb-4">Contact & Hours</h3>
+        <ul class="space-y-3 text-sm">
+          {siteConfig.contact.phones.map((phone) => (
+            <li class="flex items-center justify-between gap-2">
+              <a
+                href={telHref(phone.e164)}
+                class="inline-flex items-center gap-2 text-white hover:text-brand-accent-light transition-colors font-medium"
+              >
+                <Phone class="w-4 h-4 text-brand-accent-light shrink-0" />
+                <span>{phone.display}</span>
+              </a>
+              <a
+                href={waHref('Hi, I need help with my appliance.', phone.whatsapp)}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1 text-xs text-brand-accent-light hover:underline"
+              >
+                <MessageCircle class="w-3.5 h-3.5" />
+                <span>WhatsApp</span>
+              </a>
+            </li>
+          ))}
+          {siteConfig.contact.email && (
+            <li class="flex items-center gap-2">
+              <Mail class="w-4 h-4 text-brand-accent-light shrink-0" />
+              <a href={`mailto:${siteConfig.contact.email}`} class="hover:text-brand-accent-light transition-colors">
+                {siteConfig.contact.email}
+              </a>
+            </li>
+          )}
+          <li class="flex items-start gap-2 pt-1">
+            <MapPin class="w-4 h-4 text-brand-accent-light shrink-0 mt-0.5" />
+            <span>
+              {siteConfig.location.address
+                ? siteConfig.location.address
+                : `${siteConfig.location.city}, ${siteConfig.location.state}`}
+            </span>
+          </li>
+          <li class="flex items-center gap-2">
+            <Clock class="w-4 h-4 text-brand-accent-light shrink-0" />
+            <span>Open {siteConfig.hours}</span>
+          </li>
         </ul>
       </div>
     </div>
 
-    <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between text-sm text-brand-frost/50">
-      <p>&copy; {new Date().getFullYear()} {siteConfig.businessName}. All rights reserved.</p>
-      <div class="flex space-x-6 mt-4 md:mt-0">
+    <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+      <p>&copy; 2026 {siteConfig.businessName}. All rights reserved.</p>
+      <div class="flex items-center space-x-6">
         <a href="/privacy-policy" class="hover:text-white transition-colors">Privacy Policy</a>
         <a href="/terms" class="hover:text-white transition-colors">Terms of Service</a>
       </div>
     </div>
   </div>
 </footer>
+

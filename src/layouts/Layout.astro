@@ -3,13 +3,75 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import MobileBottomBar from '../components/MobileBottomBar.astro';
+import { siteConfig } from '../config/site';
 
 interface Props {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
+  image?: string;
+  noindex?: boolean;
 }
 
-const { title, description } = Astro.props;
+const {
+  title = siteConfig.seo.defaultTitle,
+  description = siteConfig.seo.defaultDescription,
+  image = siteConfig.heroImage.src,
+  noindex = false,
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).toString();
+const ogImageUrl = image ? new URL(image, siteConfig.siteUrl).toString() : null;
+
+const addressSchema: Record<string, string> = {
+  '@type': 'PostalAddress',
+  addressLocality: siteConfig.location.city,
+  addressRegion: siteConfig.location.state,
+  addressCountry: siteConfig.location.country,
+};
+if (siteConfig.location.address) {
+  addressSchema.streetAddress = siteConfig.location.address;
+}
+if (siteConfig.location.postalCode) {
+  addressSchema.postalCode = siteConfig.location.postalCode;
+}
+
+const localBusinessSchema: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'HomeAndConstructionBusiness',
+  name: siteConfig.businessName,
+  alternateName: siteConfig.shortName,
+  description: siteConfig.seo.defaultDescription,
+  url: siteConfig.siteUrl,
+  telephone: siteConfig.contact.phones.map((p) => p.e164),
+  areaServed: {
+    '@type': 'City',
+    name: siteConfig.location.city,
+  },
+  address: addressSchema,
+  founder: siteConfig.proprietors.map((name) => ({
+    '@type': 'Person',
+    name,
+  })),
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: siteConfig.descriptor,
+    itemListElement: siteConfig.services.map((s) => ({
+      '@type': 'Offer',
+      itemOffered: {
+        '@type': 'Service',
+        name: s.title,
+        description: s.shortDescription,
+      },
+    })),
+  },
+};
+
+if (siteConfig.contact.email) {
+  localBusinessSchema.email = siteConfig.contact.email;
+}
+if (siteConfig.location.mapUrl) {
+  localBusinessSchema.hasMap = siteConfig.location.mapUrl;
+}
 ---
 
 <!doctype html>
@@ -19,11 +81,31 @@ const { title, description } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="keywords" content={siteConfig.seo.keywords.join(', ')} />
+    <link rel="canonical" href={canonicalUrl} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteConfig.businessName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+
+    <meta name="twitter:card" content={ogImageUrl ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-    <meta name="theme-color" content="#0B1B2B" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="theme-color" content="#0B0F14" />
+    <script type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />
   </head>
   <body class="flex flex-col min-h-screen">
     <Header />
@@ -32,23 +114,6 @@ const { title, description } = Astro.props;
     </main>
     <Footer />
     <MobileBottomBar />
-    
-    <script>
-      // Intersection Observer for fade-up animations
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('opacity-100', 'translate-y-0');
-            entry.target.classList.remove('opacity-0', 'translate-y-8');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { rootMargin: '0px', threshold: 0.1 });
-
-      document.querySelectorAll('.animate-on-scroll').forEach(el => {
-        el.classList.add('transition-all', 'duration-700', 'opacity-0', 'translate-y-8');
-        observer.observe(el);
-      });
-    </script>
   </body>
 </html>
+

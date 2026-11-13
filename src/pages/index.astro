@@ -1,264 +1,448 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { siteConfig } from '../config/site';
+import { primaryPhone, telHref, waHref } from '../lib/contact';
 import ServiceCard from '../components/ServiceCard.astro';
 import TestimonialCard from '../components/TestimonialCard.astro';
-import BeforeAfterSlider from "../components/BeforeAfterSlider.astro";
 import FAQAccordion from '../components/FAQAccordion.astro';
 import BookingForm from '../components/BookingForm.astro';
-import { CheckCircle2, Shield, Clock, Award, MapPin } from 'lucide-astro';
+import {
+  CheckCircle2,
+  Clock,
+  MapPin,
+  Phone,
+  MessageCircle,
+  Snowflake,
+  Refrigerator,
+  WashingMachine,
+  Microwave,
+  Wrench,
+  Home,
+  FileCheck,
+  UserCheck,
+  ArrowRight,
+} from 'lucide-astro';
 
-// Placeholder testimonials
-const testimonials = [
-  { name: "Anjali S.", location: "South Delhi", service: "AC Repair", text: "Incredibly professional. They fixed a leak that two other technicians couldn't find. Cleaned up perfectly afterwards." },
-  { name: "Vikram R.", location: "Gurugram", service: "Installation", text: "The installation was flawless. They ensured proper insulation and piping routing which looks very neat. Highly recommend." },
-  { name: "Priya M.", location: "Noida", service: "General Service", text: "My 4-year-old AC cools like brand new. They didn't rush the process and showed me the before/after of the coils." }
-];
+const primary = primaryPhone();
 
-const faqs = [
-  { question: "How often should I service my AC?", answer: "We recommend a deep clean and service at least once a year, ideally before summer starts. For heavily used units or dusty areas, twice a year is best." },
-  { question: "Do you provide a warranty on repairs?", answer: "Yes, we provide a 90-day warranty on our workmanship and any genuine parts we replace." },
-  { question: "Are your technicians background-checked?", answer: "Absolutely. All our technicians are in-house employees who have passed strict background checks and rigorous technical training." },
-  { question: "What is included in a general service?", answer: "It includes filter cleaning, indoor/outdoor coil washing, drain tray cleaning, blower check, gas pressure check, and electrical connection inspection." },
-  { question: "How quickly can you send someone?", answer: "We aim for same-day service for bookings made before 2 PM. For emergencies, we try to reach you within 3 hours." },
-  { question: "Are there any hidden visit charges?", answer: "No. Our inspection is completely free if you proceed with the repair. If you choose not to repair after the quote, a nominal visit fee of ₹299 applies." }
+const appliances = [
+  { label: 'AC', icon: Snowflake },
+  { label: 'Refrigerator', icon: Refrigerator },
+  { label: 'Washing Machine', icon: WashingMachine },
+  { label: 'Microwave', icon: Microwave },
 ];
 ---
 
-<Layout title={`${siteConfig.businessName} - Premium AC Repair & Service in ${siteConfig.location.city}`} description={`Professional AC repair, installation, and servicing in ${siteConfig.location.city}. Genuine parts, 90-day warranty, and expert technicians. Book now.`}>
-  
-  <!-- Hero Section -->
-  <section class="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden bg-brand-navy flex items-center min-h-[90vh]">
-    <div class="absolute inset-0 z-0">
-      <!-- PLACEHOLDER: Replace with a high-quality cinematic image of a bright airy room with an AC -->
-      <div class="absolute inset-0 bg-gradient-to-r from-brand-navy via-brand-navy/90 to-transparent z-10"></div>
-      <img src="https://images.unsplash.com/photo-1615873968403-89e068629265?q=80&w=2940&auto=format&fit=crop" alt="Modern living room with air conditioner" class="w-full h-full object-cover object-center opacity-60" />
-    </div>
-    
+<Layout title={siteConfig.seo.defaultTitle} description={siteConfig.seo.defaultDescription}>
+  <!-- 1. Hero -->
+  <section class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-brand-ink text-white">
+    <div
+      class="absolute inset-0 pointer-events-none bg-[radial-gradient(#ffffff18_1px,transparent_1px)] bg-[length:24px_24px]"
+      aria-hidden="true"
+    ></div>
+    <div
+      class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_top_right,rgba(45,212,191,0.12),transparent_60%)]"
+      aria-hidden="true"
+    ></div>
+
     <div class="container mx-auto px-6 relative z-10">
-      <div class="max-w-3xl">
-        <div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-2 mb-8 animate-on-scroll">
-          <span class="flex h-2 w-2 rounded-full bg-brand-accent"></span>
-          <span class="text-brand-frost text-sm font-medium tracking-wide">Serving {siteConfig.location.city} & NCR</span>
-        </div>
-        
-        <h1 class="text-fluid-h1 text-white mb-6 animate-on-scroll" style="transition-delay: 100ms;">
-          Perfectly Cool.<br/>Professionally Cared For.
-        </h1>
-        
-        <p class="text-xl md:text-2xl text-brand-frost/90 mb-10 max-w-2xl leading-relaxed animate-on-scroll" style="transition-delay: 200ms;">
-          Expert diagnostics, genuine parts, and white-glove service for your home's climate comfort.
-        </p>
-        
-        <div class="flex flex-col sm:flex-row gap-4 mb-12 animate-on-scroll" style="transition-delay: 300ms;">
-          <a href="#booking" class="bg-brand-navy text-white px-8 py-4 rounded-full font-medium text-lg text-center hover:bg-brand-accent/90 transition-colors shadow-lg shadow-brand-accent/20">
-            Book Free Inspection
-          </a>
-          <a href={`tel:${siteConfig.contact.phone.replace(/[^0-9+]/g, '')}`} class="bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-full font-medium text-lg text-center hover:bg-white/20 transition-colors">
-            Call {siteConfig.contact.phone}
-          </a>
-        </div>
-        
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-6 animate-on-scroll" style="transition-delay: 400ms;">
-          <div class="flex items-center space-x-3 text-brand-frost">
-            <Shield class="w-5 h-5 text-brand-accent" />
-            <span class="text-sm font-medium">90-Day Warranty</span>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+        <div class="lg:col-span-7">
+          <div class="inline-flex items-center space-x-2 bg-white/5 border border-white/15 rounded-full px-4 py-1.5 mb-6">
+            <span class="flex h-2 w-2 rounded-full bg-brand-accent-light"></span>
+            <span class="text-slate-200 text-xs sm:text-sm font-medium tracking-wide">
+              Serving {siteConfig.location.city}, {siteConfig.location.state}
+            </span>
           </div>
-          <div class="flex items-center space-x-3 text-brand-frost">
-            <Clock class="w-5 h-5 text-brand-accent" />
-            <span class="text-sm font-medium">Same-Day Service</span>
+
+          <h1 class="text-fluid-h1 text-white mb-4">
+            {siteConfig.heroTagline}
+            <span class="sr-only"> — Appliance Repair in {siteConfig.location.city}</span>
+          </h1>
+
+          <p class="text-lg md:text-2xl font-display font-medium text-brand-accent-light mb-4">
+            {siteConfig.subhead}
+          </p>
+
+          <p class="text-base md:text-lg text-slate-300 mb-8 max-w-2xl leading-relaxed">
+            {siteConfig.businessName} provides professional inspection, repair, maintenance and replacement parts for ACs, refrigerators, washing machines and microwave ovens with convenient doorstep assistance.
+          </p>
+
+          <div class="flex flex-col sm:flex-row flex-wrap gap-3.5 mb-8">
+            <a
+              href="#booking"
+              class="bg-brand-accent text-white px-7 py-3.5 rounded-xl font-semibold text-base text-center hover:bg-brand-accent/90 transition-colors shadow-sm"
+            >
+              Book a Service
+            </a>
+            <a
+              href={telHref(primary.e164)}
+              class="bg-white text-brand-ink px-7 py-3.5 rounded-xl font-semibold text-base text-center hover:bg-slate-100 transition-colors inline-flex items-center justify-center gap-2"
+            >
+              <Phone class="w-4 h-4 text-brand-accent" />
+              <span>Call Now ({primary.display})</span>
+            </a>
+            <a
+              href={waHref('Hi, I need help with my appliance.')}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="border border-white/25 text-white px-7 py-3.5 rounded-xl font-semibold text-base text-center hover:bg-white/10 transition-colors inline-flex items-center justify-center gap-2"
+            >
+              <MessageCircle class="w-4 h-4 text-brand-accent-light" />
+              <span>WhatsApp Us</span>
+            </a>
           </div>
-          <div class="flex items-center space-x-3 text-brand-frost col-span-2 md:col-span-1">
-            <Award class="w-5 h-5 text-brand-accent" />
-            <span class="text-sm font-medium">{siteConfig.stats.rating} Rating ({siteConfig.stats.homesServed} homes)</span>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-6 border-t border-white/10 mb-5">
+            <div class="flex items-center space-x-2.5 text-slate-200 text-sm">
+              <Wrench class="w-4 h-4 text-brand-accent-light shrink-0" />
+              <span>Multi-brand service</span>
+            </div>
+            <div class="flex items-center space-x-2.5 text-slate-200 text-sm">
+              <Home class="w-4 h-4 text-brand-accent-light shrink-0" />
+              <span>Doorstep assistance</span>
+            </div>
+            <div class="flex items-center space-x-2.5 text-slate-200 text-sm">
+              <FileCheck class="w-4 h-4 text-brand-accent-light shrink-0" />
+              <span>Clear problem explanation</span>
+            </div>
+          </div>
+
+          <p class="inline-flex items-center gap-2 text-xs sm:text-sm text-slate-300">
+            <Clock class="w-4 h-4 text-brand-accent-light shrink-0" />
+            <span>Open {siteConfig.hours}</span>
+          </p>
+        </div>
+
+        <div class="lg:col-span-5">
+          <div class="rounded-2xl border border-white/15 bg-white/5 p-3 shadow-2xl">
+            <div class="relative rounded-xl overflow-hidden aspect-[3/2] bg-brand-ink">
+              <img
+                src={siteConfig.heroImage.src}
+                alt={siteConfig.heroImage.alt}
+                width="960"
+                height="640"
+                fetchpriority="high"
+                class="w-full h-full object-cover"
+              />
+              <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-brand-ink/90 via-brand-ink/40 to-transparent p-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-brand-accent-light">
+                  {siteConfig.shortName} • {siteConfig.location.city}
+                </p>
+                <p class="text-sm font-medium text-white">
+                  Expert AC, Refrigerator, Washing Machine & Microwave Repair
+                </p>
+              </div>
+            </div>
+            <div class="grid grid-cols-3 gap-2.5 mt-2.5">
+              <img
+                src="/gallery/refrigerator-repair.webp"
+                alt="Refrigerator repair service in Kamareddy"
+                width="320"
+                height="240"
+                loading="lazy"
+                class="w-full aspect-[4/3] object-cover rounded-lg border border-white/10"
+              />
+              <img
+                src="/gallery/washing-machine-repair.webp"
+                alt="Washing machine repair service in Kamareddy"
+                width="320"
+                height="240"
+                loading="lazy"
+                class="w-full aspect-[4/3] object-cover rounded-lg border border-white/10"
+              />
+              <img
+                src="/gallery/microwave-oven-repair.webp"
+                alt="Microwave oven repair service in Kamareddy"
+                width="320"
+                height="240"
+                loading="lazy"
+                class="w-full aspect-[4/3] object-cover rounded-lg border border-white/10"
+              />
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Trust Marquee -->
-  <section class="py-8 bg-brand-frost/30 border-b border-brand-frost overflow-hidden">
-    <div class="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-      <p class="text-sm font-medium text-slate-500 uppercase tracking-widest whitespace-nowrap">Brands We Service</p>
-      <div class="flex space-x-8 md:space-x-12 overflow-x-auto w-full pb-2 md:pb-0 hide-scrollbar opacity-60 grayscale">
-        {siteConfig.brands.map(brand => (
-          <span class="text-xl font-display font-bold text-brand-navy whitespace-nowrap">{brand}</span>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Services Bento -->
-  <section class="py-24 bg-brand-white">
+  <!-- 2. Appliance Strip -->
+  <section class="py-10 bg-white border-b border-brand-line">
     <div class="container mx-auto px-6">
-      <div class="text-center max-w-2xl mx-auto mb-16 animate-on-scroll">
-        <h2 class="text-fluid-h2 mb-6">Expertise you can feel</h2>
-        <p class="text-lg text-slate-600">From a simple gas top-up to complex PCB repairs, our certified technicians handle it all with precision and care.</p>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {appliances.map((item) => {
+          const Icon = item.icon;
+          return (
+            <div class="flex items-center gap-3.5 p-4 rounded-2xl border border-brand-line bg-brand-paper">
+              <div class="w-11 h-11 rounded-xl bg-brand-mist text-brand-accent flex items-center justify-center shrink-0">
+                <Icon class="w-5 h-5" />
+              </div>
+              <span class="font-display font-semibold text-brand-ink text-sm sm:text-base">
+                {item.label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* PLACEHOLDER: brands list pending client confirmation via siteConfig.brandsConfirmed */}
+      {siteConfig.brands.length > 0 && (
+        <div class="mt-8 pt-6 border-t border-brand-line flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <p class="text-xs font-semibold uppercase tracking-wider text-slate-600 shrink-0">
+            Brands we commonly service
+          </p>
+          <div class="flex flex-wrap gap-2">
+            {siteConfig.brands.map((brand) => (
+              <span class="px-3 py-1 rounded-full text-xs font-medium bg-brand-mist text-brand-ink border border-brand-line">
+                {brand}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- 3. Services Grid -->
+  <section class="py-20 md:py-24 bg-brand-paper">
+    <div class="container mx-auto px-6">
+      <div class="max-w-2xl mb-14">
+        <p class="text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
+          Our Services
+        </p>
+        <h2 class="text-fluid-h2 mb-4">Appliance Repair & Maintenance</h2>
+        <p class="text-base md:text-lg text-slate-700">
+          {siteConfig.location.serviceAreaText}
+        </p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {siteConfig.services.map((service, index) => (
-          <div class="animate-on-scroll" style={`transition-delay: ${index * 100}ms`}>
-            <ServiceCard {...service} />
-          </div>
+        {siteConfig.services.map((service) => (
+          <ServiceCard {...service} />
         ))}
       </div>
     </div>
   </section>
 
-  <!-- Why Choose Us -->
-  <section class="py-24 bg-white relative overflow-hidden">
-    <div class="container mx-auto px-6 relative z-10">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        <div class="animate-on-scroll">
-          <h2 class="text-fluid-h2 mb-6">Not your typical repair service.</h2>
-          <p class="text-lg text-slate-600 mb-10">We believe in transparent pricing, arriving on time, and leaving your home as clean as we found it.</p>
-          
-          <div class="space-y-8">
-            <div class="flex items-start space-x-4">
-              <div class="w-12 h-12 bg-brand-frost rounded-full flex items-center justify-center shrink-0">
-                <CheckCircle2 class="w-6 h-6 text-brand-navy" />
+  <!-- 4. Why Choose SS TECHNO -->
+  <section class="py-20 md:py-24 bg-white border-y border-brand-line">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div class="lg:col-span-7">
+          <p class="text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
+            Why Choose {siteConfig.shortName}
+          </p>
+          <h2 class="text-2xl md:text-3xl font-display font-bold text-brand-ink mb-6 leading-snug">
+            Professional Service | Honest Support | Convenient Doorstep Assistance
+          </h2>
+          <p class="text-slate-700 mb-8 leading-relaxed">
+            {siteConfig.mission}
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+            {siteConfig.whyChoose.map((point) => (
+              <div class="flex items-center space-x-3 p-3.5 rounded-xl bg-brand-paper border border-brand-line">
+                <CheckCircle2 class="w-5 h-5 text-brand-accent shrink-0" />
+                <span class="text-sm font-medium text-brand-ink">{point}</span>
               </div>
-              <div>
-                <h4 class="text-xl font-bold text-brand-navy mb-2">Upfront Written Quotes</h4>
-                <p class="text-slate-600">No surprises or hidden fees. We inspect, explain the issue, and provide a clear quote before any work begins.</p>
-              </div>
-            </div>
-            <div class="flex items-start space-x-4">
-              <div class="w-12 h-12 bg-brand-frost rounded-full flex items-center justify-center shrink-0">
-                <Award class="w-6 h-6 text-brand-navy" />
-              </div>
-              <div>
-                <h4 class="text-xl font-bold text-brand-navy mb-2">Genuine OEM Parts</h4>
-                <p class="text-slate-600">We don't cut corners. Replacements are sourced directly from manufacturers to ensure longevity.</p>
-              </div>
-            </div>
-            <div class="flex items-start space-x-4">
-              <div class="w-12 h-12 bg-brand-frost rounded-full flex items-center justify-center shrink-0">
-                <Shield class="w-6 h-6 text-brand-navy" />
-              </div>
-              <div>
-                <h4 class="text-xl font-bold text-brand-navy mb-2">90-Day Peace of Mind</h4>
-                <p class="text-slate-600">Our workmanship and replaced parts are backed by a solid 90-day warranty. If the same issue returns, so do we—for free.</p>
-              </div>
-            </div>
+            ))}
           </div>
+
+          <p class="text-lg font-display font-bold text-brand-accent">
+            We Keep Your Home Appliances Running.
+          </p>
         </div>
-        
-        <div class="relative animate-on-scroll h-[600px] rounded-3xl overflow-hidden shadow-2xl">
-          <!-- PLACEHOLDER: Technician working -->
-          <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=1200&auto=format&fit=crop" alt="Technician repairing AC" class="w-full h-full object-cover" />
-          <div class="absolute inset-0 bg-brand-navy/10"></div>
-          
-          <!-- Floating badge -->
-          <div class="absolute bottom-8 left-8 bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-xl max-w-xs">
-            <div class="flex items-center space-x-4 mb-2">
-              <div class="flex -space-x-2">
-                <div class="w-10 h-10 rounded-full bg-brand-frost border-2 border-white"></div>
-                <div class="w-10 h-10 rounded-full bg-brand-accent border-2 border-white"></div>
-                <div class="w-10 h-10 rounded-full bg-brand-navy border-2 border-white flex items-center justify-center text-white text-xs font-bold">+</div>
-              </div>
-              <div class="font-bold text-brand-navy">{siteConfig.stats.homesServed}</div>
+
+        <div class="lg:col-span-5">
+          <div class="bg-brand-ink text-white p-8 md:p-10 rounded-2xl border border-brand-line space-y-6">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-brand-accent-light text-xs font-semibold uppercase tracking-wider">
+              {siteConfig.shortName} Promise
             </div>
-            <p class="text-sm font-medium text-slate-600">Homes cooled perfectly this year.</p>
+            <h3 class="text-2xl font-display font-bold text-white leading-snug">
+              "{siteConfig.tagline}"
+            </h3>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              Our technicians inspect your appliance carefully, identify the actual fault and explain the required repair solution clearly before proceeding with any work.
+            </p>
+            <div class="pt-4 border-t border-white/10 space-y-3 text-sm text-slate-300">
+              <div class="flex items-start gap-2.5">
+                <MapPin class="w-4 h-4 text-brand-accent-light shrink-0 mt-0.5" />
+                <span>
+                  {siteConfig.location.address
+                    ? siteConfig.location.address
+                    : `${siteConfig.location.city}, ${siteConfig.location.state}`}
+                </span>
+              </div>
+              <div class="flex items-center gap-2.5">
+                <Clock class="w-4 h-4 text-brand-accent-light shrink-0" />
+                <span>Open {siteConfig.hours}</span>
+              </div>
+              <div class="flex items-center gap-2.5">
+                <UserCheck class="w-4 h-4 text-brand-accent-light shrink-0" />
+                <span>Proprietors: {siteConfig.proprietors.join(' & ')}</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Process -->
-  <section class="py-24 bg-brand-navy text-white">
+  <!-- 5. How It Works -->
+  <section class="py-20 md:py-24 bg-brand-paper">
     <div class="container mx-auto px-6">
-      <div class="text-center max-w-2xl mx-auto mb-16 animate-on-scroll">
-        <h2 class="text-fluid-h2 text-white mb-6">How it works</h2>
-        <p class="text-brand-frost/80 text-lg">A seamless experience from booking to cool air.</p>
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <p class="text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
+          Our Process
+        </p>
+        <h2 class="text-fluid-h2 mb-4">How It Works</h2>
+        <p class="text-slate-700 text-base md:text-lg">
+          Simple, transparent steps from your first call to service completion.
+        </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
-        <div class="hidden md:block absolute top-12 left-1/8 right-1/8 h-0.5 bg-brand-frost/20 z-0"></div>
-        
-        {[
-          { step: "01", title: "Book", desc: "Call or submit the form. We'll confirm your slot immediately." },
-          { step: "02", title: "Inspect", desc: "Our tech arrives, diagnoses the issue, and gives a written quote." },
-          { step: "03", title: "Approve", desc: "You review the price. We only proceed if you're 100% happy." },
-          { step: "04", title: "Relax", desc: "We fix it, clean up, and activate your 90-day warranty." }
-        ].map((item, i) => (
-          <div class="relative z-10 text-center animate-on-scroll" style={`transition-delay: ${i * 150}ms`}>
-            <div class="w-24 h-24 mx-auto bg-brand-navy border-4 border-brand-frost/20 rounded-full flex items-center justify-center text-3xl font-display font-bold text-brand-accent mb-6 shadow-[0_0_30px_rgba(25,181,201,0.2)]">
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-6 relative">
+        <div
+          class="hidden md:block absolute top-10 left-[10%] right-[10%] h-px bg-brand-line z-0"
+          aria-hidden="true"
+        ></div>
+
+        {siteConfig.process.map((item) => (
+          <div class="relative z-10 bg-white md:bg-transparent p-6 md:p-2 rounded-2xl border border-brand-line md:border-0 text-left md:text-center">
+            <div class="w-16 h-16 md:mx-auto bg-white border-2 border-brand-accent text-brand-accent rounded-2xl flex items-center justify-center text-xl font-display font-bold mb-4 shadow-sm">
               {item.step}
             </div>
-            <h4 class="text-xl font-bold mb-3">{item.title}</h4>
-            <p class="text-brand-frost/70 text-sm leading-relaxed max-w-xs mx-auto">{item.desc}</p>
+            <h3 class="text-base font-bold text-brand-ink mb-2">{item.title}</h3>
+            <p class="text-slate-700 text-sm leading-relaxed">{item.desc}</p>
           </div>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- Testimonials -->
-  <section class="py-24 bg-brand-white">
+
+  <!-- 6. Reviews -->
+  <section class="py-20 md:py-24 bg-white border-t border-brand-line">
     <div class="container mx-auto px-6">
-      <div class="flex flex-col md:flex-row justify-between items-end mb-16 animate-on-scroll">
-        <div class="max-w-xl">
-          <h2 class="text-fluid-h2 mb-4">Don't just take our word for it.</h2>
-          <p class="text-lg text-slate-600">See what our neighbors in {siteConfig.location.city} have to say.</p>
+      <div class="flex flex-col md:flex-row justify-between md:items-end mb-12 gap-4">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
+            Customer Feedback
+          </p>
+          <h2 class="text-fluid-h2">What Customers Say</h2>
         </div>
-        <div class="mt-6 md:mt-0 flex items-center space-x-2 text-brand-navy font-bold text-xl">
-          <span>{siteConfig.stats.rating}</span>
-          <div class="flex text-amber-400">
-            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-          </div>
-          <span class="text-sm font-normal text-slate-500 ml-2">Average Rating</span>
-        </div>
+        <a
+          href="/reviews"
+          class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-accent hover:text-brand-ink transition-colors"
+        >
+          <span>View all reviews</span>
+          <ArrowRight class="w-4 h-4" />
+        </a>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {testimonials.map((t, i) => (
-          <div class="animate-on-scroll" style={`transition-delay: ${i * 150}ms`}>
-            <TestimonialCard {...t} />
-          </div>
+        {siteConfig.reviews.map((review) => (
+          <TestimonialCard text={review.text} author={review.author} />
         ))}
       </div>
     </div>
   </section>
 
-  <!-- Booking & FAQ -->
-  <section class="py-24 bg-white relative">
-    <div class="absolute top-0 left-0 w-full h-1/2 bg-brand-white"></div>
-    <div class="container mx-auto px-6 relative z-10">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
-        
-        <div class="lg:col-span-5 animate-on-scroll">
-          <h2 class="text-3xl md:text-4xl font-display font-bold text-brand-navy mb-8">Frequently Asked Questions</h2>
-          <FAQAccordion faqs={faqs} />
-          
-          <div class="mt-12 p-8 bg-brand-frost/30 rounded-3xl border border-brand-frost">
-            <h4 class="font-bold text-brand-navy mb-2">Still have questions?</h4>
-            <p class="text-sm text-slate-600 mb-6">Our experts are ready to help you with any specific queries.</p>
-            <a href={`tel:${siteConfig.contact.phone.replace(/[^0-9+]/g, '')}`} class="inline-flex items-center font-bold text-brand-accent hover:text-brand-navy transition-colors">
-              Call {siteConfig.contact.phone} &rarr;
-            </a>
+  <!-- 7. CTA Band (Dark) -->
+  <section class="py-16 md:py-20 bg-brand-ink text-white">
+    <div class="container mx-auto px-6">
+      <div class="rounded-2xl border border-white/15 bg-white/5 p-8 md:p-12 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
+        <div class="max-w-2xl">
+          <h2 class="text-3xl md:text-4xl font-display font-bold text-white mb-3">
+            Need Appliance Repair?
+          </h2>
+          <p class="text-slate-300 text-base md:text-lg mb-6">
+            Don't let a faulty appliance disturb your daily routine.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-slate-300">
+            <div>
+              <span class="text-slate-400 block text-xs uppercase tracking-wider">Phones</span>
+              {siteConfig.contact.phones.map((p, idx) => (
+                <>
+                  <a href={telHref(p.e164)} class="font-semibold text-white hover:text-brand-accent-light">
+                    {p.display}
+                  </a>
+                  {idx < siteConfig.contact.phones.length - 1 && <span> / </span>}
+                </>
+              ))}
+            </div>
+            <div>
+              <span class="text-slate-400 block text-xs uppercase tracking-wider">Proprietors</span>
+              <span class="font-medium text-white">{siteConfig.proprietors.join(' & ')}</span>
+            </div>
+            <div>
+              <span class="text-slate-400 block text-xs uppercase tracking-wider">Shop Address</span>
+              <span class="font-medium text-white">
+                {siteConfig.location.address ?? `${siteConfig.location.city}, ${siteConfig.location.state}`}
+              </span>
+            </div>
+            <div>
+              <span class="text-slate-400 block text-xs uppercase tracking-wider">Working Hours</span>
+              <span class="font-medium text-white">{siteConfig.hours}</span>
+            </div>
+            {siteConfig.contact.email && (
+              <div class="sm:col-span-2">
+                <span class="text-slate-400 block text-xs uppercase tracking-wider">Email</span>
+                <a href={`mailto:${siteConfig.contact.email}`} class="font-medium text-white hover:text-brand-accent-light">
+                  {siteConfig.contact.email}
+                </a>
+              </div>
+            )}
           </div>
         </div>
 
-        <div class="lg:col-span-7 animate-on-scroll">
-          <BookingForm />
+        <div class="flex flex-col sm:flex-row lg:flex-col gap-3 w-full lg:w-auto shrink-0">
+          <a
+            href="#booking"
+            class="bg-brand-accent text-white px-7 py-3.5 rounded-xl font-semibold text-sm text-center hover:bg-brand-accent/90 transition-colors"
+          >
+            Book a Service
+          </a>
+          <a
+            href={telHref(primary.e164)}
+            class="bg-white text-brand-ink px-7 py-3.5 rounded-xl font-semibold text-sm text-center hover:bg-slate-100 transition-colors inline-flex items-center justify-center gap-2"
+          >
+            <Phone class="w-4 h-4 text-brand-accent" />
+            <span>Call {primary.display}</span>
+          </a>
+          <a
+            href={waHref('Hi, I need help with my appliance.')}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="border border-white/25 text-white px-7 py-3.5 rounded-xl font-semibold text-sm text-center hover:bg-white/10 transition-colors inline-flex items-center justify-center gap-2"
+          >
+            <MessageCircle class="w-4 h-4 text-brand-accent-light" />
+            <span>WhatsApp Us</span>
+          </a>
         </div>
-
       </div>
     </div>
   </section>
 
+  <!-- 8. FAQ + BookingForm -->
+  <section class="py-20 md:py-24 bg-brand-paper">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <div class="lg:col-span-5">
+          <p class="text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
+            Common Questions
+          </p>
+          <h2 class="text-2xl md:text-3xl font-display font-bold text-brand-ink mb-6">
+            Frequently Asked Questions
+          </h2>
+          <FAQAccordion faqs={siteConfig.faqs} />
+        </div>
+
+        <div class="lg:col-span-7">
+          <BookingForm id="booking" />
+        </div>
+      </div>
+    </div>
+  </section>
 </Layout>
 
-<style>
-  .hide-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .hide-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-</style>

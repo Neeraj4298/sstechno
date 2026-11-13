@@ -1,70 +1,134 @@
 ---
-import { siteConfig } from '../config/site';
+import Logo from './Logo.astro';
+import { primaryPhone, telHref } from '../lib/contact';
 import { Phone, Menu, X } from 'lucide-astro';
+
+const pathname = Astro.url.pathname;
+const isHomeOrContact =
+  pathname === '/' || pathname === '/contact' || pathname === '/contact/';
+const bookingHref = isHomeOrContact ? '#booking' : '/contact#booking';
+const primary = primaryPhone();
+
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'About Us' },
+  { href: '/services', label: 'Services' },
+  { href: '/gallery', label: 'Gallery' },
+  { href: '/reviews', label: 'Reviews' },
+  { href: '/contact', label: 'Contact' },
+];
 ---
 
 <header class="fixed w-full z-50 transition-all duration-300 glass" id="site-header">
   <div class="container mx-auto px-6 h-20 flex items-center justify-between">
-    <a href="/" class="text-2xl font-display font-bold text-brand-navy">
-      {siteConfig.businessName}
+    <a href="/" class="flex items-center" aria-label="SS TECHNO Home">
+      <Logo showDescriptor={true} />
     </a>
 
-    <nav class="hidden md:flex items-center space-x-8">
-      <a href="/services" class="text-sm font-medium text-brand-navy hover:text-brand-accent transition-colors">Services</a>
-      <a href="/about" class="text-sm font-medium text-brand-navy hover:text-brand-accent transition-colors">About</a>
-      <a href="/blog" class="text-sm font-medium text-brand-navy hover:text-brand-accent transition-colors">Blog</a>
-      <a href="/contact" class="text-sm font-medium text-brand-navy hover:text-brand-accent transition-colors">Contact</a>
+    <nav class="hidden lg:flex items-center space-x-7" aria-label="Primary Navigation">
+      {navLinks.map((link) => {
+        const active =
+          link.href === '/'
+            ? pathname === '/'
+            : pathname === link.href || pathname.startsWith(`${link.href}/`);
+        return (
+          <a
+            href={link.href}
+            class={`text-sm font-medium transition-colors ${
+              active ? 'text-brand-accent font-semibold' : 'text-brand-ink hover:text-brand-accent'
+            }`}
+          >
+            {link.label}
+          </a>
+        );
+      })}
     </nav>
 
     <div class="hidden md:flex items-center space-x-4">
-      <a href={`tel:${siteConfig.contact.phone.replace(/[^0-9+]/g, '')}`} class="flex items-center space-x-2 text-brand-navy hover:text-brand-accent transition-colors">
-        <Phone class="w-4 h-4" />
-        <span class="font-medium">{siteConfig.contact.phone}</span>
+      <a
+        href={telHref(primary.e164)}
+        class="flex items-center space-x-2 text-sm font-medium text-brand-ink hover:text-brand-accent transition-colors"
+      >
+        <Phone class="w-4 h-4 text-brand-accent" />
+        <span>{primary.display}</span>
       </a>
-      <a href="#booking" class="bg-brand-navy text-white px-6 py-2.5 rounded-full text-sm font-medium hover:bg-brand-navy/90 transition-colors shadow-lg shadow-brand-navy/20">
+      <a
+        href={bookingHref}
+        class="bg-brand-accent text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-brand-accent/90 transition-colors shadow-sm"
+      >
         Book Now
       </a>
     </div>
 
-    <button id="mobile-menu-btn" class="md:hidden p-2 text-brand-navy" aria-label="Toggle menu">
+    <button
+      id="mobile-menu-btn"
+      type="button"
+      class="lg:hidden p-2 text-brand-ink rounded-lg hover:bg-brand-mist transition-colors"
+      aria-label="Toggle menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
       <Menu class="w-6 h-6" id="menu-icon" />
       <X class="w-6 h-6 hidden" id="close-icon" />
     </button>
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 w-full bg-white border-t border-slate-100 shadow-xl pb-6">
-    <nav class="flex flex-col p-6 space-y-4">
-      <a href="/services" class="text-lg font-medium text-brand-navy">Services</a>
-      <a href="/about" class="text-lg font-medium text-brand-navy">About</a>
-      <a href="/blog" class="text-lg font-medium text-brand-navy">Blog</a>
-      <a href="/contact" class="text-lg font-medium text-brand-navy">Contact</a>
-      <hr class="border-slate-100 my-2" />
-      <a href="#booking" class="bg-brand-navy text-white px-6 py-3 rounded-full text-center font-medium">Book Inspection</a>
+  <div
+    id="mobile-menu"
+    class="hidden lg:hidden absolute top-full left-0 w-full bg-brand-paper border-b border-brand-line shadow-sm pb-6"
+  >
+    <nav class="container mx-auto flex flex-col px-6 pt-4 space-y-3" aria-label="Mobile Navigation">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class="mobile-nav-link py-2 text-base font-medium text-brand-ink hover:text-brand-accent transition-colors"
+        >
+          {link.label}
+        </a>
+      ))}
+      <hr class="border-brand-line my-2" />
+      <a
+        href={telHref(primary.e164)}
+        class="mobile-nav-link flex items-center justify-center space-x-2 py-3 rounded-xl border border-brand-ink text-brand-ink font-medium"
+      >
+        <Phone class="w-4 h-4 text-brand-accent" />
+        <span>Call {primary.display}</span>
+      </a>
+      <a
+        href={bookingHref}
+        class="mobile-nav-link bg-brand-accent text-white px-6 py-3 rounded-xl text-center font-medium hover:bg-brand-accent/90 transition-colors"
+      >
+        Book Now
+      </a>
     </nav>
   </div>
 </header>
 
 <script>
-  const header = document.getElementById('site-header');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 20) {
-      header?.classList.add('h-16', 'shadow-sm');
-      header?.classList.remove('h-20');
-    } else {
-      header?.classList.remove('h-16', 'shadow-sm');
-      header?.classList.add('h-20');
-    }
-  });
-
   const btn = document.getElementById('mobile-menu-btn');
   const menu = document.getElementById('mobile-menu');
   const menuIcon = document.getElementById('menu-icon');
   const closeIcon = document.getElementById('close-icon');
+  const links = document.querySelectorAll('.mobile-nav-link');
+
+  function setMenuOpen(isOpen: boolean) {
+    if (!btn || !menu || !menuIcon || !closeIcon) return;
+    btn.setAttribute('aria-expanded', String(isOpen));
+    menu.classList.toggle('hidden', !isOpen);
+    menuIcon.classList.toggle('hidden', isOpen);
+    closeIcon.classList.toggle('hidden', !isOpen);
+  }
 
   btn?.addEventListener('click', () => {
-    menu?.classList.toggle('hidden');
-    menuIcon?.classList.toggle('hidden');
-    closeIcon?.classList.toggle('hidden');
+    const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+    setMenuOpen(!isExpanded);
+  });
+
+  links.forEach((link) => {
+    link.addEventListener('click', () => {
+      setMenuOpen(false);
+    });
   });
 </script>
+

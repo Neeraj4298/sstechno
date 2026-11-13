@@ -1,72 +1,166 @@
 ---
 import { siteConfig } from '../config/site';
+import { primaryPhone, telHref } from '../lib/contact';
+import { MessageCircle, Phone } from 'lucide-astro';
+
+interface Props {
+  defaultService?: string;
+  id?: string;
+}
+
+const { defaultService = '', id = 'booking' } = Astro.props;
+const primary = primaryPhone();
+
+const applianceOptions = [
+  'AC',
+  'Refrigerator',
+  'Washing Machine',
+  'Microwave Oven',
+  'Spare Parts',
+  'Home Appliance Maintenance',
+  'Other',
+];
+
+function matchesDefault(option: string, selected: string) {
+  if (!selected) return false;
+  const normOpt = option.toLowerCase();
+  const normSel = selected.toLowerCase();
+  return normSel === normOpt || normSel.startsWith(normOpt);
+}
+const inputCls =
+  'w-full px-4 py-3 rounded-xl border border-brand-line bg-brand-paper/50 text-brand-ink placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-accent focus:border-brand-accent invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500 transition-colors';
 ---
 
-<div class="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-slate-100 relative overflow-hidden" id="booking">
-  <div class="absolute top-0 right-0 w-64 h-64 bg-brand-frost rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/3"></div>
-  
-  <h3 class="text-3xl font-display font-bold mb-2 relative z-10">Book Free Inspection</h3>
-  <p class="text-slate-600 mb-8 relative z-10">Fill out the details below and we'll reach out via WhatsApp to confirm your slot.</p>
+<div class="bg-white p-6 md:p-10 rounded-2xl shadow-sm border border-brand-line" id={id}>
+  <h3 class="text-2xl md:text-3xl font-display font-bold text-brand-ink mb-2">Book a Service</h3>
+  <p class="text-slate-700 text-sm md:text-base mb-6">
+    Fill in your details and we'll confirm on WhatsApp.
+  </p>
 
-  <form id="booking-form" class="space-y-6 relative z-10">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <form class="booking-form space-y-5" data-whatsapp={primary.whatsapp}>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
       <div>
-        <label for="name" class="block text-sm font-medium text-slate-700 mb-2">Your Name</label>
-        <input type="text" id="name" required class="w-full px-4 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-navy focus:border-transparent transition-shadow" placeholder="e.g. Rahul Sharma" />
+        <label for={`${id}-name`} class="block text-sm font-medium text-brand-ink mb-1.5">
+          Your Name <span class="text-brand-accent">*</span>
+        </label>
+        <input type="text" id={`${id}-name`} name="name" required placeholder="Your full name" class={inputCls} />
       </div>
       <div>
-        <label for="phone" class="block text-sm font-medium text-slate-700 mb-2">Phone Number</label>
-        <input type="tel" id="phone" required class="w-full px-4 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-navy focus:border-transparent transition-shadow" placeholder="10-digit mobile" />
+        <label for={`${id}-phone`} class="block text-sm font-medium text-brand-ink mb-1.5">
+          Phone Number <span class="text-brand-accent">*</span>
+        </label>
+        <input
+          type="tel"
+          id={`${id}-phone`}
+          name="phone"
+          required
+          pattern="[0-9]{10}"
+          inputmode="numeric"
+          maxlength="10"
+          placeholder="10-digit mobile number"
+          class={inputCls}
+        />
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
       <div>
-        <label for="area" class="block text-sm font-medium text-slate-700 mb-2">Area / Locality</label>
-        <select id="area" required class="w-full px-4 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-navy focus:border-transparent transition-shadow bg-white">
-          <option value="" disabled selected>Select your area</option>
-          {siteConfig.location.areas.map(area => (
-            <option value={area}>{area}</option>
+        <label for={`${id}-appliance`} class="block text-sm font-medium text-brand-ink mb-1.5">
+          Appliance <span class="text-brand-accent">*</span>
+        </label>
+        <select id={`${id}-appliance`} name="appliance" required class={inputCls}>
+          <option value="" disabled selected={!defaultService}>Select appliance</option>
+          {applianceOptions.map((option) => (
+            <option value={option} selected={matchesDefault(option, defaultService)}>
+              {option}
+            </option>
           ))}
-          <option value="other">Other (specify in details)</option>
         </select>
       </div>
+
       <div>
-        <label for="serviceType" class="block text-sm font-medium text-slate-700 mb-2">Service Required</label>
-        <select id="serviceType" required class="w-full px-4 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-navy focus:border-transparent transition-shadow bg-white">
-          <option value="" disabled selected>What do you need help with?</option>
-          {siteConfig.services.map(s => (
-            <option value={s.title}>{s.title}</option>
-          ))}
-        </select>
+        <label for={`${id}-area`} class="block text-sm font-medium text-brand-ink mb-1.5">
+          Area / Locality <span class="text-brand-accent">*</span>
+        </label>
+        {siteConfig.location.areas.length > 0 ? (
+          <select id={`${id}-area`} name="area" required class={inputCls}>
+            <option value="" disabled selected>Select your area</option>
+            {siteConfig.location.areas.map((area) => (
+              <option value={area}>{area}</option>
+            ))}
+            <option value="Other">Other</option>
+          </select>
+        ) : (
+          <input
+            type="text"
+            id={`${id}-area`}
+            name="area"
+            required
+            placeholder={`Your area in ${siteConfig.location.city}`}
+            class={inputCls}
+          />
+        )}
       </div>
     </div>
 
     <div>
-      <label for="details" class="block text-sm font-medium text-slate-700 mb-2">Issue Details (Optional)</label>
-      <textarea id="details" rows="3" class="w-full px-4 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-navy focus:border-transparent transition-shadow" placeholder="E.g., AC is not cooling, making noise, or needs installation..."></textarea>
+      <label for={`${id}-details`} class="block text-sm font-medium text-brand-ink mb-1.5">
+        Problem Details (Optional)
+      </label>
+      <textarea
+        id={`${id}-details`}
+        name="details"
+        rows="3"
+        placeholder="Briefly describe the issue with your appliance..."
+        class={inputCls}
+      ></textarea>
     </div>
 
-    <button type="submit" class="w-full bg-brand-navy text-white font-medium text-lg py-4 rounded-full hover:bg-brand-navy/90 transition-colors shadow-lg shadow-brand-navy/20 flex justify-center items-center space-x-2">
+    <button
+      type="submit"
+      class="w-full bg-brand-accent text-white font-semibold text-base py-3.5 px-6 rounded-xl hover:bg-brand-accent/90 focus:outline-none focus:ring-2 focus:ring-brand-accent focus:ring-offset-2 transition-colors shadow-sm flex justify-center items-center space-x-2"
+    >
+      <MessageCircle class="w-5 h-5" />
       <span>Book via WhatsApp</span>
     </button>
+
+    <p class="text-center text-sm text-slate-700 pt-1">
+      Or call us:{' '}
+      <a
+        href={telHref(primary.e164)}
+        class="inline-flex items-center gap-1 font-semibold text-brand-accent hover:text-brand-ink transition-colors"
+      >
+        <Phone class="w-3.5 h-3.5" />
+        <span>{primary.display}</span>
+      </a>
+    </p>
   </form>
 </div>
 
-<script define:vars={{ whatsappNumber: siteConfig.contact.whatsapp }}>
-  const form = document.getElementById('booking-form');
-  form?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const name = document.getElementById('name').value;
-    const phone = document.getElementById('phone').value;
-    const area = document.getElementById('area').value;
-    const serviceType = document.getElementById('serviceType').value;
-    const details = document.getElementById('details').value;
+<script>
+  document.querySelectorAll<HTMLFormElement>('.booking-form').forEach((form) => {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const name = String(fd.get('name') || '').trim();
+      const phone = String(fd.get('phone') || '').trim();
+      const appliance = String(fd.get('appliance') || '').trim();
+      const area = String(fd.get('area') || '').trim();
+      const details = String(fd.get('details') || '').trim();
+      const whatsapp = form.dataset.whatsapp || '';
 
-    const message = `Hello, I would like to book a service.%0A%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Area:* ${area}%0A*Service:* ${serviceType}%0A*Details:* ${details || 'None'}`;
-    const cleanNumber = whatsappNumber.replace(/[^0-9+]/g, '');
-    const url = `https://wa.me/${cleanNumber}?text=${message}`;
-    
-    window.open(url, '_blank');
+      const message = [
+        'Hi SS TECHNO, I would like to book a service.',
+        '',
+        `Name: ${name}`,
+        `Phone: ${phone}`,
+        `Appliance: ${appliance}`,
+        `Area: ${area}`,
+        `Problem: ${details || 'Not specified'}`,
+      ].join('\n');
+      const url = `https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`;
+      window.open(url, '_blank', 'noopener,noreferrer');
+    });
   });
 </script>
+
